@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/app-shell/sidebar";
 import { Topbar } from "@/components/app-shell/topbar";
 import { CommandPalette } from "@/components/app-shell/command-palette";
 import { AssistantDock } from "@/components/app-shell/assistant-dock";
+import { AppErrorBoundary } from "@/components/app-shell/error-boundary";
 import { useSidebar } from "@/lib/store";
 import { cn } from "@/lib/cn";
 
@@ -24,7 +25,9 @@ export default function AppGroupLayout({
         )}
       >
         <Topbar />
-        <main className="px-4 pb-16 pt-6 sm:px-6 lg:px-8">{children}</main>
+        <main className="px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+          <AppErrorBoundary>{children}</AppErrorBoundary>
+        </main>
       </div>
       <CommandPalette />
       <AssistantDock />

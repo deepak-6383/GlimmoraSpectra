@@ -1,8 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { Badge } from "@/components/ui/badge";
 import { useAssistant, useCommandPalette, useSidebar } from "@/lib/store";
+import {
+  useApiHealth,
+  useSystemHealth,
+} from "@/lib/system-health";
 import { useEffect, useState } from "react";
 
 export function Topbar() {
@@ -10,6 +15,10 @@ export function Topbar() {
   const { toggle: toggleCmd } = useCommandPalette();
   const { setOpen } = useAssistant();
   const [time, setTime] = useState("");
+
+  // start the global system-health poller (idempotent across mounts)
+  useApiHealth({ intervalMs: 8000 });
+  const { health, gatewayReachable } = useSystemHealth();
 
   useEffect(() => {
     const t = () =>
@@ -60,10 +69,16 @@ export function Topbar() {
         </button>
 
         <div className="ml-auto flex items-center gap-2">
-          <div className="hidden items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-widest text-ink-mute sm:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-aurora gs-pulse" />
-            All systems nominal · {time}
-          </div>
+          <SystemStatusPill
+            time={time}
+            up={health?.up_count ?? 0}
+            total={health?.service_count ?? 0}
+            overall={
+              !gatewayReachable
+                ? "down"
+                : (health?.overall ?? "unknown")
+            }
+          />
 
           <button
             type="button"
@@ -88,5 +103,51 @@ export function Topbar() {
         </div>
       </div>
     </header>
+  );
+}
+
+function SystemStatusPill({
+  time,
+  up,
+  total,
+  overall,
+}: {
+  time: string;
+  up: number;
+  total: number;
+  overall: "operational" | "partial" | "down" | "unknown";
+}) {
+  const dotClass =
+    overall === "operational"
+      ? "bg-aurora gs-pulse"
+      : overall === "partial"
+        ? "bg-amber-spec gs-pulse"
+        : overall === "down"
+          ? "bg-coral"
+          : "bg-ink-faint";
+  const label =
+    overall === "operational"
+      ? `All systems · ${time}`
+      : overall === "partial"
+        ? `Partial · ${up}/${total} up`
+        : overall === "down"
+          ? "Backend unreachable"
+          : "Checking…";
+  const titleHint =
+    overall === "down"
+      ? "Cannot reach the gateway. The frontend works in demo mode; live AI is disabled."
+      : overall === "partial"
+        ? `${up} of ${total} services healthy. Click for details.`
+        : "All upstream services reporting healthy.";
+
+  return (
+    <Link
+      href="/app/system"
+      title={titleHint}
+      className="hidden items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[11px] uppercase tracking-widest text-ink-mute transition hover:bg-white/[0.07] sm:flex"
+    >
+      <span className={`h-1.5 w-1.5 rounded-full ${dotClass}`} />
+      {label}
+    </Link>
   );
 }

@@ -21,5 +21,6 @@ export const NAV: NavItem[] = [
   { label: "Lens · 3D Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
   { label: "Analytics", href: "/app/analytics", icon: "chart", group: "operations" },
 
+  { label: "System Status", href: "/app/system", icon: "activity", group: "system" },
   { label: "Settings & Privacy", href: "/app/settings", icon: "lock", group: "system" },
 ];
