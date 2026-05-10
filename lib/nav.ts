@@ -8,7 +8,8 @@ export type NavItem = {
 
 export const NAV: NavItem[] = [
   { label: "Cognitive Hub", href: "/app/dashboard", icon: "sparkles", group: "core" },
-  { label: "AI Console", href: "/app/console", icon: "wave", badge: "live", group: "core" },
+  { label: "Live Pipeline", href: "/app/live", icon: "camera", badge: "live", group: "core" },
+  { label: "AI Console", href: "/app/console", icon: "wave", group: "core" },
 
   { label: "Vision Intelligence", href: "/app/vision", icon: "eye", group: "intelligence" },
   { label: "Memory Engine", href: "/app/memory", icon: "brain", group: "intelligence" },
