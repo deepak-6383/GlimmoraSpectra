@@ -6,30 +6,40 @@
    ========================================================= */
 
 :root {
-  /* Surfaces — twilight slate. Lift these four to push lighter globally,
-     drop them back toward #03040a for the original midnight feel. */
-  --gs-void: #1f273f;
-  --gs-abyss: #2a3354;
-  --gs-deep: #353e62;
-  --gs-graphite: #434c70;
-  --gs-glass: rgba(255, 255, 255, 0.07);
-  --gs-glass-strong: rgba(255, 255, 255, 0.11);
-  --gs-edge: rgba(255, 255, 255, 0.13);
-  --gs-edge-soft: rgba(255, 255, 255, 0.09);
+  /* =========================================================
+     PEARL AURORA — premium light theme
+     -----------------------------------------------------------
+     Surfaces are layered cool pearl + pure white; glass becomes a
+     subtle dark wash on light; ink flips to deep navy. Accents
+     stay on-brand so the cinematic identity carries over.
+     ========================================================= */
 
-  --gs-cyan: #58e3ff;
-  --gs-cyan-soft: #79c8ff;
+  --gs-void:      #eef1f8; /* page background — warm pearl */
+  --gs-abyss:     #e2e8f3; /* deeper atmospheric layer */
+  --gs-deep:      #ffffff; /* primary panels / cards */
+  --gs-graphite:  #f5f7fc; /* alt surface for sub-cards */
+
+  /* Glass — frosted dark wash on light bg */
+  --gs-glass:        rgba(20, 28, 50, 0.045);
+  --gs-glass-strong: rgba(20, 28, 50, 0.075);
+  --gs-edge:         rgba(20, 28, 50, 0.12);
+  --gs-edge-soft:    rgba(20, 28, 50, 0.07);
+
+  /* Accents — same brand palette */
+  --gs-cyan:    #1aa9d6; /* slightly darkened so text on white reads */
+  --gs-cyan-soft: #58e3ff;
   --gs-electric: #4f7dff;
-  --gs-violet: #8c5cff;
-  --gs-fuchsia: #c965ff;
-  --gs-aurora: #6affc1;
-  --gs-amber: #ffba6a;
-  --gs-coral: #ff7a8d;
+  --gs-violet:  #7a4dd8; /* darkened for legibility on white */
+  --gs-fuchsia: #b143e0;
+  --gs-aurora:  #2cb887; /* darker green for legibility */
+  --gs-amber:   #d68a3a;
+  --gs-coral:   #e6516a;
 
-  --gs-ink: #f4f6ff;
-  --gs-ink-soft: #d2d8f0;
-  --gs-ink-mute: #99a4c8;
-  --gs-ink-faint: #707a9a;
+  /* Ink (text) — INVERTED for light theme */
+  --gs-ink:       #0a0e1f; /* near-black with slight blue cast */
+  --gs-ink-soft:  #2a3148; /* secondary body text */
+  --gs-ink-mute:  #5a6584; /* muted / labels */
+  --gs-ink-faint: #8a93b0; /* tertiary / hints */
 
   --gs-grad-aurora: linear-gradient(135deg, #58e3ff 0%, #8c5cff 50%, #c965ff 100%);
   --gs-grad-neural: linear-gradient(135deg, #79c8ff 0%, #4f7dff 60%, #8c5cff 100%);
@@ -90,57 +100,75 @@ body {
 }
 
 body {
+  /* Subtle violet/cyan auroras over the pearl base — soft, never washing
+     out the page. Layered radial gradients keep the cinematic feel. */
   background:
-    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.28), transparent 60%),
-    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.22), transparent 65%),
-    radial-gradient(800px 600px at 50% 50%, rgba(79, 125, 255, 0.14), transparent 80%),
+    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.10), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
+    radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.06), transparent 80%),
     var(--gs-void);
   min-height: 100vh;
 }
 
 ::selection {
-  background: rgba(88, 227, 255, 0.28);
-  color: #ffffff;
+  background: rgba(88, 227, 255, 0.30);
+  color: #0a0e1f;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(88, 227, 255, 0.35), rgba(140, 92, 255, 0.35));
+  background: linear-gradient(180deg, rgba(122, 77, 216, 0.50), rgba(26, 169, 214, 0.50));
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(88, 227, 255, 0.55), rgba(140, 92, 255, 0.55));
+  background: linear-gradient(180deg, rgba(26, 169, 214, 0.70), rgba(122, 77, 216, 0.70));
   background-clip: padding-box;
   border: 2px solid transparent;
 }
 
+/* =========================================================
+   Glass surfaces — frosted dark wash on light pearl
+   ========================================================= */
+
 .gs-glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.78),
+    rgba(255, 255, 255, 0.55)
+  );
   border: 1px solid var(--gs-edge);
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
 }
 
 .gs-glass-strong {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(28px) saturate(160%);
-  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.78)
+  );
+  border: 1px solid rgba(20, 28, 50, 0.14);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
 .gs-panel {
   position: relative;
   background:
     radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
   border: 1px solid var(--gs-edge);
   border-radius: var(--gs-r-lg);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
   overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 18px 36px -22px rgba(20, 28, 50, 0.18),
+    0 4px 12px -6px rgba(20, 28, 50, 0.08);
 }
 
 .gs-panel::before {
@@ -149,13 +177,18 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(88, 227, 255, 0.45), rgba(140, 92, 255, 0.0) 40%, rgba(140, 92, 255, 0.4) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 169, 214, 0.45),
+    rgba(122, 77, 216, 0.0) 40%,
+    rgba(122, 77, 216, 0.40) 100%
+  );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .gs-noise { position: relative; }
@@ -171,8 +204,8 @@ body {
 
 .gs-grid-bg {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(20, 28, 50, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 28, 50, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
   background-position: -1px -1px;
   -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
@@ -180,7 +213,7 @@ body {
 }
 
 .gs-text-gradient {
-  background: linear-gradient(110deg, #ffffff 0%, #c8d8ff 35%, #79c8ff 60%, #c965ff 100%);
+  background: linear-gradient(110deg, #0a0e1f 0%, #2a3148 35%, #1aa9d6 60%, #b143e0 100%);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
@@ -303,4 +336,77 @@ body {
   outline: 2px solid var(--gs-cyan);
   outline-offset: 2px;
   border-radius: 6px;
+}
+
+/* =========================================================
+   Pearl Aurora — light-theme overrides
+   -----------------------------------------------------------
+   Components across the codebase hard-code Tailwind alphas
+   like `bg-white/[0.04]` and `border-white/10`. On a light
+   pearl base those are invisible. These rules flip every
+   such utility to a dark wash so the existing components
+   look right *without any component-level edits*.
+
+   Specificity: a single class selector matches Tailwind's
+   own specificity, so order is enough — these come after
+   Tailwind's import. We avoid `!important` to stay overridable.
+   ========================================================= */
+
+/* --- bg-white/X variants ----------------------------------- */
+.bg-white\/5,        .bg-white\/\[0\.05\] { background-color: rgba(20, 28, 50, 0.05); }
+.bg-white\/10,       .bg-white\/\[0\.10\] { background-color: rgba(20, 28, 50, 0.08); }
+.bg-white\/15        { background-color: rgba(20, 28, 50, 0.12); }
+.bg-white\/20        { background-color: rgba(20, 28, 50, 0.16); }
+.bg-white\/\[0\.02\] { background-color: rgba(20, 28, 50, 0.025); }
+.bg-white\/\[0\.025\]{ background-color: rgba(20, 28, 50, 0.030); }
+.bg-white\/\[0\.03\] { background-color: rgba(20, 28, 50, 0.035); }
+.bg-white\/\[0\.04\] { background-color: rgba(20, 28, 50, 0.045); }
+.bg-white\/\[0\.06\] { background-color: rgba(20, 28, 50, 0.06); }
+.bg-white\/\[0\.07\] { background-color: rgba(20, 28, 50, 0.075); }
+.bg-white\/\[0\.08\] { background-color: rgba(20, 28, 50, 0.085); }
+
+/* --- border-white/X variants ------------------------------- */
+.border-white\/5,    .border-white\/\[0\.05\] { border-color: rgba(20, 28, 50, 0.07); }
+.border-white\/10,   .border-white\/\[0\.10\] { border-color: rgba(20, 28, 50, 0.10); }
+.border-white\/15,   .border-white\/\[0\.15\] { border-color: rgba(20, 28, 50, 0.13); }
+.border-white\/20    { border-color: rgba(20, 28, 50, 0.16); }
+.border-white\/25    { border-color: rgba(20, 28, 50, 0.20); }
+.border-white\/\[0\.04\] { border-color: rgba(20, 28, 50, 0.06); }
+.border-white\/\[0\.05\] { border-color: rgba(20, 28, 50, 0.07); }
+.border-white\/\[0\.06\] { border-color: rgba(20, 28, 50, 0.08); }
+.border-white\/\[0\.07\] { border-color: rgba(20, 28, 50, 0.09); }
+.border-white\/\[0\.08\] { border-color: rgba(20, 28, 50, 0.10); }
+.border-white\/\[0\.10\]{ border-color: rgba(20, 28, 50, 0.12); }
+
+/* --- ring-white/X (focus rings on dark theme) -------------- */
+.ring-white\/10  { --tw-ring-color: rgba(20, 28, 50, 0.10); }
+.ring-white\/15  { --tw-ring-color: rgba(20, 28, 50, 0.13); }
+
+/* --- bg-black/X (heavily used on overlays) ----------------- */
+.bg-black\/30 { background-color: rgba(255, 255, 255, 0.55); }
+.bg-black\/40 { background-color: rgba(255, 255, 255, 0.65); }
+.bg-black\/60 { background-color: rgba(20, 28, 50, 0.45); }
+.bg-black\/70 { background-color: rgba(20, 28, 50, 0.55); }
+
+/* --- text-white → keep, but flip in inverted spots --------
+   Most `text-white` usage sits on dark gradient buttons or
+   over translucent overlays where white text still works.
+   We only flip the rare cases where it lands on a pure-white
+   panel — those use `text-ink` already. */
+
+/* --- Spectral / spectral-fill button-text contrast ---------
+   The `Button variant="primary"` uses bg-white text-black, which
+   stays correct on light pearl too. */
+
+/* --- Selection (kept above) ------------------------------- */
+
+/* --- Spectra — gradient buttons keep their existing look --- */
+
+/* =========================================================
+   Atmospheric cursor aura — soften for light bg
+   ========================================================= */
+[aria-hidden][style*="screen"] {
+  /* mix-blend-mode:screen behaves correctly on light bg —
+     the violet/cyan glow simply tints toward white, which is
+     what we want. Just lower the alpha a touch via mask. */
 }

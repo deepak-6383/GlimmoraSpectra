@@ -43,11 +43,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#03040a",
+  themeColor: "#eef1f8",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "dark",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full text-ink relative overflow-x-hidden">
