@@ -6,16 +6,16 @@
    ========================================================= */
 
 :root {
-  /* Surfaces — lifted ~3 stops from pure midnight while keeping the
-     cinematic dark feel. Re-tune here to push lighter / darker globally. */
-  --gs-void: #0d1220;
-  --gs-abyss: #121830;
-  --gs-deep: #1a2138;
-  --gs-graphite: #232a44;
-  --gs-glass: rgba(255, 255, 255, 0.05);
-  --gs-glass-strong: rgba(255, 255, 255, 0.085);
-  --gs-edge: rgba(255, 255, 255, 0.10);
-  --gs-edge-soft: rgba(255, 255, 255, 0.07);
+  /* Surfaces — twilight slate. Lift these four to push lighter globally,
+     drop them back toward #03040a for the original midnight feel. */
+  --gs-void: #1f273f;
+  --gs-abyss: #2a3354;
+  --gs-deep: #353e62;
+  --gs-graphite: #434c70;
+  --gs-glass: rgba(255, 255, 255, 0.07);
+  --gs-glass-strong: rgba(255, 255, 255, 0.11);
+  --gs-edge: rgba(255, 255, 255, 0.13);
+  --gs-edge-soft: rgba(255, 255, 255, 0.09);
 
   --gs-cyan: #58e3ff;
   --gs-cyan-soft: #79c8ff;
@@ -27,9 +27,9 @@
   --gs-coral: #ff7a8d;
 
   --gs-ink: #f4f6ff;
-  --gs-ink-soft: #c8cfeb;
-  --gs-ink-mute: #8a96bb;
-  --gs-ink-faint: #5a6488;
+  --gs-ink-soft: #d2d8f0;
+  --gs-ink-mute: #99a4c8;
+  --gs-ink-faint: #707a9a;
 
   --gs-grad-aurora: linear-gradient(135deg, #58e3ff 0%, #8c5cff 50%, #c965ff 100%);
   --gs-grad-neural: linear-gradient(135deg, #79c8ff 0%, #4f7dff 60%, #8c5cff 100%);
@@ -91,9 +91,9 @@ body {
 
 body {
   background:
-    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.22), transparent 60%),
-    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.18), transparent 65%),
-    radial-gradient(800px 600px at 50% 50%, rgba(79, 125, 255, 0.10), transparent 80%),
+    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.28), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.22), transparent 65%),
+    radial-gradient(800px 600px at 50% 50%, rgba(79, 125, 255, 0.14), transparent 80%),
     var(--gs-void);
   min-height: 100vh;
 }
