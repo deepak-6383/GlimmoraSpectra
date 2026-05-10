@@ -467,7 +467,7 @@ export function RealisticEye({ className }: { className?: string }) {
 
       <Canvas
         dpr={dpr}
-        camera={{ position: [0, 0, 3.0], fov: 36 }}
+        camera={{ position: [0, 0, 6.0], fov: 28 }}
         gl={{
           antialias: true,
           alpha: true,

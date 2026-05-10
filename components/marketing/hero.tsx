@@ -120,7 +120,7 @@ export function Hero() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" as const }}
-              className="relative aspect-square w-full max-w-[640px] mx-auto"
+              className="relative aspect-square w-full max-w-[520px] mx-auto"
             >
               <div className="absolute inset-0 -z-10 rounded-full blur-[80px] opacity-60"
                 style={{
