@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Waveform } from "@/components/fx/waveform";
 import { ScanGrid } from "@/components/fx/scan-grid";
+import { useToast } from "@/components/ui/toast";
 
 const HoloOrb = dynamic(
   () => import("@/components/fx/holo-orb").then((m) => m.HoloOrb),
@@ -40,7 +41,23 @@ function ConsoleInner() {
   const [draft, setDraft] = useState(initial);
   const [thinking, setThinking] = useState(false);
   const [listening, setListening] = useState(true);
+  const [boost, setBoost] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const toast = useToast();
+
+  const onBoost = () => {
+    setBoost((prev) => {
+      const next = !prev;
+      toast({
+        title: next ? "Reasoning boosted" : "Reasoning · standard",
+        description: next
+          ? "Aurora will route to the deeper model. Replies may take a moment longer."
+          : "Back to fast on-device reasoning.",
+        tone: next ? "success" : "info",
+      });
+      return next;
+    });
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 99_999, behavior: "smooth" });
@@ -81,8 +98,13 @@ function ConsoleInner() {
               <Icon name={listening ? "mic" : "pause"} className="h-4 w-4" />
               {listening ? "Listening" : "Muted"}
             </Button>
-            <Button variant="spectral" size="sm">
-              <Icon name="zap" className="h-4 w-4" /> Boost reasoning
+            <Button
+              variant={boost ? "outline" : "spectral"}
+              size="sm"
+              onClick={onBoost}
+            >
+              <Icon name="zap" className="h-4 w-4" />
+              {boost ? "Boosted" : "Boost reasoning"}
             </Button>
           </>
         }

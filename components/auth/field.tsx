@@ -14,6 +14,8 @@ type Props = {
   hint?: string;
   className?: string;
   autoComplete?: string;
+  name?: string;
+  required?: boolean;
 };
 
 export function Field({
@@ -26,6 +28,8 @@ export function Field({
   hint,
   className,
   autoComplete,
+  name,
+  required,
 }: Props) {
   const id = useId();
   const [focus, setFocus] = useState(false);
@@ -57,6 +61,8 @@ export function Field({
         <input
           id={id}
           type={inputType}
+          name={name}
+          required={required}
           autoComplete={autoComplete}
           placeholder={placeholder}
           defaultValue={defaultValue}

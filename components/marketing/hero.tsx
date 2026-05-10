@@ -9,13 +9,13 @@ import { Icon } from "@/components/ui/icon";
 import { ParticleField } from "@/components/fx/particle-field";
 import { Waveform } from "@/components/fx/waveform";
 
-const AgiCore = dynamic(
-  () => import("@/components/agi-core").then((m) => m.AgiCore),
+const RealisticEye = dynamic(
+  () => import("@/components/realistic-eye").then((m) => m.RealisticEye),
   {
     ssr: false,
     loading: () => (
       <div className="relative h-full w-full">
-        <div className="absolute inset-0 m-auto h-44 w-44 rounded-full bg-gradient-to-br from-cyan-spec/40 to-violet-spec/40 blur-3xl" />
+        <div className="absolute inset-0 m-auto h-44 w-44 rounded-full bg-gradient-to-br from-[#dba391]/40 to-violet-spec/30 blur-3xl" />
       </div>
     ),
   },
@@ -128,7 +128,7 @@ export function Hero() {
                     "radial-gradient(closest-side, rgba(140,92,255,0.45), rgba(88,227,255,0.25), transparent 70%)",
                 }}
               />
-              <AgiCore className="absolute inset-0" />
+              <RealisticEye className="absolute inset-0" />
 
               <FloatingChip
                 className="left-2 top-6 sm:left-4"

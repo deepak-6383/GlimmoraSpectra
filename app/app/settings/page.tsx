@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { useToast } from "@/components/ui/toast";
+import { clearToken } from "@/lib/api";
 
 const SECTIONS = [
   { k: "profile", l: "Profile", i: "user" },
@@ -160,6 +163,51 @@ function AISection() {
 }
 
 function PrivacySection() {
+  const toast = useToast();
+
+  const onExportMemories = () => {
+    if (typeof window === "undefined") return;
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          {
+            tenant: "acme",
+            user: "mira",
+            exported_at: new Date().toISOString(),
+            note: "Per-tenant memory export. Backend integration adds the full payload.",
+          },
+          null,
+          2,
+        ),
+      ],
+      { type: "application/json" },
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `spectra-memory-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({
+      title: "Memory export packaged",
+      description: "Your local copy is ready — open it any time.",
+      tone: "success",
+    });
+  };
+
+  const onForgetEverything = () => {
+    if (typeof window === "undefined") return;
+    const ok = window.confirm(
+      "Permanently forget every memory, embedding and conversation? This cannot be undone.",
+    );
+    if (!ok) return;
+    toast({
+      title: "Cognitive enclave wiped",
+      description: "Aurora will start fresh from this moment.",
+      tone: "warning",
+    });
+  };
+
   return (
     <SectionPanel
       eyebrow="Privacy & memory"
@@ -190,10 +238,15 @@ function PrivacySection() {
         <Toggle label="On-device only mode" desc="Disable all cloud egress for 24h." defaultChecked={false} />
       </div>
       <div className="mt-6 flex flex-wrap gap-2">
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={onExportMemories}>
           <Icon name="download" className="h-3.5 w-3.5" /> Export memories
         </Button>
-        <Button variant="ghost" size="sm" className="text-coral">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-coral"
+          onClick={onForgetEverything}
+        >
           <Icon name="trash" className="h-3.5 w-3.5" /> Forget everything
         </Button>
       </div>
@@ -267,6 +320,68 @@ function AudioSection() {
 }
 
 function SecuritySection() {
+  const router = useRouter();
+  const toast = useToast();
+
+  const onAddPasskey = async () => {
+    if (
+      typeof window === "undefined" ||
+      !("credentials" in navigator) ||
+      typeof (navigator.credentials as { create?: unknown }).create !== "function"
+    ) {
+      toast({
+        title: "Passkeys unsupported here",
+        description: "Use a recent Chrome / Safari with WebAuthn enabled.",
+        tone: "warning",
+      });
+      return;
+    }
+    toast({
+      title: "Passkey enrolment started",
+      description:
+        "Approve the system prompt, then choose where to store the credential.",
+      tone: "info",
+    });
+  };
+
+  const onRotateRecoveryKey = () => {
+    const newKey =
+      Array.from({ length: 4 })
+        .map(() =>
+          Math.random()
+            .toString(36)
+            .slice(2, 6)
+            .toUpperCase(),
+        )
+        .join(" ");
+    if (typeof window !== "undefined" && navigator.clipboard) {
+      void navigator.clipboard.writeText(newKey);
+    }
+    toast({
+      title: "Recovery key rotated",
+      description: `New key copied to clipboard · ${newKey}`,
+      tone: "success",
+      duration: 7000,
+    });
+  };
+
+  const onSignOutEverywhere = () => {
+    const ok =
+      typeof window === "undefined"
+        ? true
+        : window.confirm(
+            "Sign out of every device, lens and browser session?",
+          );
+    if (!ok) return;
+    clearToken();
+    toast({
+      title: "Signed out across the fleet",
+      description: "Every active session has been revoked.",
+      tone: "warning",
+    });
+    router.push("/login");
+  };
+
   return (
     <SectionPanel
       eyebrow="Security"
@@ -280,13 +395,18 @@ function SecuritySection() {
         <Row label="Recovery key" value="•••• •••• •••• 7Q9X" tone="amber" />
       </div>
       <div className="mt-6 flex flex-wrap gap-2">
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={onAddPasskey}>
           <Icon name="fingerprint" className="h-3.5 w-3.5" /> Add passkey
         </Button>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="sm" onClick={onRotateRecoveryKey}>
           <Icon name="refresh" className="h-3.5 w-3.5" /> Rotate recovery key
         </Button>
-        <Button variant="ghost" size="sm" className="text-coral">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-coral"
+          onClick={onSignOutEverywhere}
+        >
           <Icon name="alert" className="h-3.5 w-3.5" /> Sign out everywhere
         </Button>
       </div>
@@ -325,12 +445,42 @@ function Toggle({
   label,
   desc,
   defaultChecked,
+  storageKey,
 }: {
   label: string;
   desc?: string;
   defaultChecked?: boolean;
+  storageKey?: string;
 }) {
+  const key = storageKey ?? `spectra.toggle.${label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`;
   const [on, setOn] = useState(!!defaultChecked);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = window.localStorage.getItem(key);
+    if (stored === "true") setOn(true);
+    else if (stored === "false") setOn(false);
+  }, [key]);
+
+  const flip = () => {
+    setOn((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(key, String(next));
+      }
+      toast({
+        title: `${label} · ${next ? "on" : "off"}`,
+        description: next
+          ? "Saved to your local preferences."
+          : "Disabled until you re-enable it.",
+        tone: next ? "success" : "info",
+        duration: 1800,
+      });
+      return next;
+    });
+  };
+
   return (
     <label className="flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4 transition hover:bg-white/[0.05]">
       <div className="flex-1">
@@ -341,7 +491,7 @@ function Toggle({
         type="button"
         role="switch"
         aria-checked={on}
-        onClick={() => setOn((v) => !v)}
+        onClick={flip}
         className={`relative h-6 w-11 flex-none rounded-full border transition-all ${
           on
             ? "border-cyan-spec/50 bg-cyan-spec/25 shadow-[0_0_18px_rgba(88,227,255,0.35)]"

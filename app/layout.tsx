@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { CursorAura } from "@/components/cursor-aura";
 import { _Safelist } from "@/components/_safelist";
+import { ToastViewport } from "@/components/ui/toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default function RootLayout({
       <body className="min-h-full text-ink relative overflow-x-hidden">
         <Providers>
           <CursorAura />
+          <ToastViewport />
           {children}
           <_Safelist />
         </Providers>

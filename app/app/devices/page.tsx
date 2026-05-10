@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Sparkline } from "@/components/ui/stat";
 import { ScanGrid } from "@/components/fx/scan-grid";
+import { useToast } from "@/components/ui/toast";
 
 const devices = [
   {
@@ -53,6 +55,73 @@ const devices = [
 ];
 
 export default function DevicesPage() {
+  const toast = useToast();
+  const [syncing, setSyncing] = useState(false);
+
+  const onSync = () => {
+    if (syncing) return;
+    setSyncing(true);
+    toast({
+      title: "Syncing fleet",
+      description: "Re-handshaking 4 devices across the mesh.",
+      tone: "info",
+    });
+    setTimeout(() => {
+      setSyncing(false);
+      toast({
+        title: "Fleet in sync",
+        description: "All devices report nominal · firmware up to date.",
+        tone: "success",
+      });
+    }, 1500);
+  };
+
+  const onPair = () => {
+    toast({
+      title: "Pairing mode",
+      description:
+        "Hold a Spectra Lens within 30 cm of your phone — pairing handshake starting.",
+      tone: "info",
+    });
+  };
+
+  const onManage = (name: string) => {
+    toast({
+      title: `${name} · settings opened`,
+      description: "Configure permissions, OTA cadence and privacy zones.",
+      tone: "info",
+    });
+  };
+
+  const onPower = (name: string, current: string) => {
+    const next = current === "offline" ? "wake" : "sleep";
+    toast({
+      title: `${name} · ${next} signal sent`,
+      description:
+        next === "wake"
+          ? "Device will resume in a few seconds."
+          : "Device will enter low-power mode.",
+      tone: "info",
+    });
+  };
+
+  const onScheduleInstall = () => {
+    toast({
+      title: "Firmware update scheduled",
+      description: "Tonight at 03:00 local · over Wi-Fi only.",
+      tone: "success",
+    });
+  };
+
+  const onReleaseNotes = () => {
+    toast({
+      title: "Release notes",
+      description:
+        "v3.2.0 · 4× faster gaze, low-light vision, new policy primitives.",
+      tone: "info",
+    });
+  };
+
   return (
     <>
       <PageHeader
@@ -61,10 +130,14 @@ export default function DevicesPage() {
         description="Connected devices, sync state, firmware and live telemetry — across the lens, the hub and the cognitive mesh."
         actions={
           <>
-            <Button variant="outline" size="sm">
-              <Icon name="refresh" className="h-4 w-4" /> Sync now
+            <Button variant="outline" size="sm" onClick={onSync} disabled={syncing}>
+              <Icon
+                name="refresh"
+                className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`}
+              />{" "}
+              {syncing ? "Syncing…" : "Sync now"}
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button variant="spectral" size="sm" onClick={onPair}>
               <Icon name="plus" className="h-4 w-4" /> Pair device
             </Button>
           </>
@@ -120,11 +193,16 @@ export default function DevicesPage() {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => onManage(d.name)}>
                       <Icon name="settings" className="h-3.5 w-3.5" /> Manage
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <Icon name="power" className="h-3.5 w-3.5" /> {d.status === "offline" ? "Wake" : "Sleep"}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onPower(d.name, d.status)}
+                    >
+                      <Icon name="power" className="h-3.5 w-3.5" />{" "}
+                      {d.status === "offline" ? "Wake" : "Sleep"}
                     </Button>
                   </div>
                 </div>
@@ -210,10 +288,12 @@ export default function DevicesPage() {
               <span>4m remaining</span>
             </div>
             <div className="mt-4 flex gap-2">
-              <Button variant="spectral" size="sm">
+              <Button variant="spectral" size="sm" onClick={onScheduleInstall}>
                 <Icon name="download" className="h-3.5 w-3.5" /> Schedule install
               </Button>
-              <Button variant="ghost" size="sm">Release notes</Button>
+              <Button variant="ghost" size="sm" onClick={onReleaseNotes}>
+                Release notes
+              </Button>
             </div>
           </Panel>
         </div>

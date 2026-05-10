@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
@@ -8,8 +10,56 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Stat } from "@/components/ui/stat";
 import { AreaChart, BarChart, DonutChart } from "@/components/ui/chart";
+import { useToast } from "@/components/ui/toast";
+
+const FILTERS = ["last 24h", "7 days", "30 days", "all time"] as const;
 
 export default function AnalyticsPage() {
+  const router = useRouter();
+  const toast = useToast();
+  const [filterIdx, setFilterIdx] = useState(0);
+
+  const onFilters = () => {
+    const next = (filterIdx + 1) % FILTERS.length;
+    setFilterIdx(next);
+    toast({
+      title: `Window · ${FILTERS[next]}`,
+      description: "Charts will refresh on the next data tick.",
+      tone: "info",
+    });
+  };
+
+  const onExport = () => {
+    if (typeof window === "undefined") return;
+    const csv =
+      "metric,value,delta\n" +
+      "active_devices,4211,+212\n" +
+      "inferences_per_s,189400,+4.1%\n" +
+      "memory_tb,1284,+18\n" +
+      "agent_actions_per_day,2310000,+11.4%\n";
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `spectra-analytics-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({
+      title: "Snapshot exported",
+      description: "Top-line metrics packaged as CSV.",
+      tone: "success",
+    });
+  };
+
+  const onAskAurora = () => {
+    router.push(
+      "/app/console?prompt=" +
+        encodeURIComponent(
+          "Summarise the cognitive analytics — anomalies, trends, what should I look at?",
+        ),
+    );
+  };
+
   return (
     <>
       <PageHeader
@@ -18,13 +68,13 @@ export default function AnalyticsPage() {
         description="Trace every inference, agent action and memory event across thousands of devices and tenants."
         actions={
           <>
-            <Button variant="outline" size="sm">
-              <Icon name="filter" className="h-4 w-4" /> Filters
+            <Button variant="outline" size="sm" onClick={onFilters}>
+              <Icon name="filter" className="h-4 w-4" /> {FILTERS[filterIdx]}
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={onExport}>
               <Icon name="download" className="h-4 w-4" /> Export
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button variant="spectral" size="sm" onClick={onAskAurora}>
               <Icon name="sparkles" className="h-4 w-4" /> Ask Aurora
             </Button>
           </>

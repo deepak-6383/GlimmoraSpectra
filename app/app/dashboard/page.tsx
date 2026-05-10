@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Stat } from "@/components/ui/stat";
@@ -11,6 +12,7 @@ import { Icon } from "@/components/ui/icon";
 import { Sparkline } from "@/components/ui/stat";
 import { ScanGrid } from "@/components/fx/scan-grid";
 import { Waveform } from "@/components/fx/waveform";
+import { useToast } from "@/components/ui/toast";
 
 const HoloOrb = dynamic(
   () => import("@/components/fx/holo-orb").then((m) => m.HoloOrb),
@@ -24,6 +26,9 @@ const fade = {
 };
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const toast = useToast();
+
   return (
     <>
       <PageHeader
@@ -37,10 +42,30 @@ export default function DashboardPage() {
         description="A unified surface for your senses, your memory, and the autonomous workforce moving on your behalf."
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                router.push("/app/live");
+                toast({
+                  title: "Opening the live pipeline",
+                  description: "Camera + vision overlays in one tap.",
+                  tone: "info",
+                });
+              }}
+            >
               <Icon name="scan" className="h-4 w-4" /> Scan environment
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button
+              variant="spectral"
+              size="sm"
+              onClick={() =>
+                router.push(
+                  "/app/console?prompt=" +
+                    encodeURIComponent("Brief me on my day"),
+                )
+              }
+            >
               <Icon name="sparkles" className="h-4 w-4" /> Brief me
             </Button>
           </>

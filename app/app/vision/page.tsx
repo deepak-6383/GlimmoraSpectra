@@ -2,12 +2,14 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { ScanGrid } from "@/components/fx/scan-grid";
+import { useToast } from "@/components/ui/toast";
 
 const ROIs = [
   { x: 18, y: 22, w: 22, h: 30, label: "Person · Cedar Lin", conf: 0.97, tone: "cyan" as const },
@@ -17,7 +19,7 @@ const ROIs = [
   { x: 8, y: 70, w: 12, h: 14, label: "Plant · Monstera", conf: 0.86, tone: "coral" as const },
 ];
 
-const layers = [
+const INITIAL_LAYERS = [
   { k: "objects", l: "Object detection", on: true, tone: "cyan" },
   { k: "ocr", l: "Optical character recognition", on: true, tone: "violet" },
   { k: "depth", l: "Depth & geometry", on: true, tone: "aurora" },
@@ -28,10 +30,41 @@ const layers = [
 
 export default function VisionPage() {
   const [active, setActive] = useState(0);
+  const [layers, setLayers] = useState(INITIAL_LAYERS);
+  const router = useRouter();
+  const toast = useToast();
+
   useEffect(() => {
     const id = setInterval(() => setActive((a) => (a + 1) % ROIs.length), 2400);
     return () => clearInterval(id);
   }, []);
+
+  const toggleLayer = (k: string) => {
+    setLayers((prev) =>
+      prev.map((l) => (l.k === k ? { ...l, on: !l.on } : l)),
+    );
+  };
+
+  const onSnapshot = () => {
+    const roi = ROIs[active];
+    toast({
+      title: "Snapshot captured",
+      description: `Pinned "${roi.label}" to memory · confidence ${roi.conf.toFixed(2)}`,
+      tone: "success",
+    });
+  };
+
+  const onAutoAnnotate = () => {
+    toast({
+      title: "Auto-annotation queued",
+      description: "Aurora will narrate the scene in your console.",
+      tone: "info",
+    });
+    router.push(
+      "/app/console?prompt=" +
+        encodeURIComponent("Describe everything in my current view"),
+    );
+  };
 
   return (
     <>
@@ -41,10 +74,10 @@ export default function VisionPage() {
         description="Real-time fusion of object recognition, scene understanding and ambient annotation. Streamed from your Spectra Lens at 42fps."
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={onSnapshot}>
               <Icon name="camera" className="h-4 w-4" /> Snapshot
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button variant="spectral" size="sm" onClick={onAutoAnnotate}>
               <Icon name="sparkles" className="h-4 w-4" /> Auto-annotate
             </Button>
           </>
@@ -98,39 +131,45 @@ export default function VisionPage() {
           <Panel className="p-5">
             <div className="flex items-center justify-between">
               <h3 className="font-display text-lg">Cognition layers</h3>
-              <Badge tone="cyan" pulse>5 / 6 active</Badge>
+              <Badge tone="cyan" pulse>
+                {layers.filter((l) => l.on).length} / {layers.length} active
+              </Badge>
             </div>
             <ul className="mt-4 space-y-2">
               {layers.map((l) => (
-                <li
-                  key={l.k}
-                  className={`flex items-center justify-between rounded-xl border px-3 py-2.5 transition ${
-                    l.on
-                      ? "border-white/10 bg-white/[0.04]"
-                      : "border-white/[0.05] bg-white/[0.02] opacity-70"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`h-1.5 w-1.5 rounded-full bg-${l.tone}-spec ${
-                        l.on ? "gs-pulse" : ""
-                      }`}
-                    />
-                    <span className="text-sm">{l.l}</span>
-                  </div>
-                  <div
-                    className={`h-5 w-9 rounded-full border ${
+                <li key={l.k}>
+                  <button
+                    type="button"
+                    onClick={() => toggleLayer(l.k)}
+                    aria-pressed={l.on}
+                    className={`flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left transition ${
                       l.on
-                        ? `border-${l.tone}-spec/50 bg-${l.tone}-spec/20`
-                        : "border-white/10 bg-white/[0.04]"
-                    } relative`}
+                        ? "border-white/10 bg-white/[0.04] hover:bg-white/[0.07]"
+                        : "border-white/[0.05] bg-white/[0.02] opacity-70 hover:opacity-100"
+                    }`}
                   >
-                    <span
-                      className={`absolute top-0.5 h-3.5 w-3.5 rounded-full bg-white transition-all ${
-                        l.on ? "left-[18px]" : "left-0.5"
-                      }`}
-                    />
-                  </div>
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full bg-${l.tone}-spec ${
+                          l.on ? "gs-pulse" : ""
+                        }`}
+                      />
+                      <span className="text-sm">{l.l}</span>
+                    </div>
+                    <div
+                      className={`h-5 w-9 rounded-full border ${
+                        l.on
+                          ? `border-${l.tone}-spec/50 bg-${l.tone}-spec/20`
+                          : "border-white/10 bg-white/[0.04]"
+                      } relative`}
+                    >
+                      <span
+                        className={`absolute top-0.5 h-3.5 w-3.5 rounded-full bg-white transition-all ${
+                          l.on ? "left-[18px]" : "left-0.5"
+                        }`}
+                      />
+                    </div>
+                  </button>
                 </li>
               ))}
             </ul>

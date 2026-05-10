@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
+import { useToast } from "@/components/ui/toast";
 
 type AgentStatus = "active" | "thinking" | "blocked" | "idle";
 
@@ -40,6 +42,56 @@ const statusBadge: Record<AgentStatus, { tone: "aurora" | "violet" | "coral" | "
 
 export default function AgentsPage() {
   const [active, setActive] = useState(AGENTS[0]);
+  const router = useRouter();
+  const toast = useToast();
+
+  const onComposeFlow = () => {
+    toast({
+      title: "Flow composer",
+      description: "Drag-and-drop agent flow editor coming in Phase 3.",
+      tone: "info",
+    });
+  };
+
+  const onNewAgent = () => {
+    toast({
+      title: "Agent template ready",
+      description: "Pick a starter persona in the upcoming agent studio.",
+      tone: "info",
+    });
+  };
+
+  const onRun = () => {
+    toast({
+      title: `${active.name} resumed`,
+      description: active.current,
+      tone: "success",
+    });
+    router.push(
+      "/app/console?prompt=" +
+        encodeURIComponent(`Pick up where ${active.name} left off`),
+    );
+  };
+
+  const onPause = () => {
+    toast({
+      title: `${active.name} paused`,
+      description: "I'll hold the next step until you tap Run.",
+      tone: "warning",
+    });
+  };
+
+  const onInspectPlan = () => {
+    toast({
+      title: `${active.name} · plan trace`,
+      description: `${active.steps} steps · current: ${active.current}`,
+      tone: "info",
+    });
+  };
+
+  const onConfigure = () => {
+    router.push("/app/settings");
+  };
 
   return (
     <>
@@ -49,10 +101,10 @@ export default function AgentsPage() {
         description="Composable, auditable agents that act on your behalf — from the cinematic edge of your vision to the boardroom and back."
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={onComposeFlow}>
               <Icon name="branch" className="h-4 w-4" /> Compose flow
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button variant="spectral" size="sm" onClick={onNewAgent}>
               <Icon name="plus" className="h-4 w-4" /> New agent
             </Button>
           </>
@@ -166,16 +218,16 @@ export default function AgentsPage() {
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={onRun}>
                 <Icon name="play" className="h-3.5 w-3.5" /> Run
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={onPause}>
                 <Icon name="pause" className="h-3.5 w-3.5" /> Pause
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={onInspectPlan}>
                 <Icon name="branch" className="h-3.5 w-3.5" /> Inspect plan
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={onConfigure}>
                 <Icon name="settings" className="h-3.5 w-3.5" /> Configure
               </Button>
             </div>

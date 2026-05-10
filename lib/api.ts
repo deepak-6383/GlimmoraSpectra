@@ -43,6 +43,64 @@ export function clearToken(): void {
   }
 }
 
+export type TokenBundle = {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+};
+
+/** POST /v1/auth/login — returns the token bundle and persists the access token. */
+export async function login(email: string, password: string): Promise<TokenBundle> {
+  const resp = await fetch(`${GATEWAY}/v1/auth/login`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!resp.ok) {
+    throw new Error(await safeError(resp));
+  }
+  const json = (await resp.json()) as TokenBundle;
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(TOKEN_KEY, json.access_token);
+  }
+  return json;
+}
+
+/** POST /v1/auth/signup — creates the account and persists the token. */
+export async function signup(opts: {
+  email: string;
+  password: string;
+  tenantId?: string;
+}): Promise<TokenBundle> {
+  const resp = await fetch(`${GATEWAY}/v1/auth/signup`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      email: opts.email,
+      password: opts.password,
+      tenant_id: opts.tenantId ?? "acme",
+    }),
+  });
+  if (!resp.ok) {
+    throw new Error(await safeError(resp));
+  }
+  const json = (await resp.json()) as TokenBundle;
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(TOKEN_KEY, json.access_token);
+  }
+  return json;
+}
+
+async function safeError(resp: Response): Promise<string> {
+  try {
+    const body = await resp.json();
+    return body?.error?.message || body?.detail || `${resp.status} ${resp.statusText}`;
+  } catch {
+    return `${resp.status} ${resp.statusText}`;
+  }
+}
+
 export async function authedFetch(
   path: string,
   init: RequestInit = {},

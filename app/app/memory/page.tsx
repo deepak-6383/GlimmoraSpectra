@@ -2,12 +2,14 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/app-shell/page-header";
 import { Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Sparkline } from "@/components/ui/stat";
+import { useToast } from "@/components/ui/toast";
 
 type MemKind = "vision" | "voice" | "doc" | "place" | "person" | "agent";
 
@@ -125,13 +127,16 @@ const kindIcon: Record<MemKind, string> = {
 };
 
 export default function MemoryPage() {
+  const [memories, setMemories] = useState<Memory[]>(MEMS);
   const [active, setActive] = useState<Memory>(MEMS[1]);
   const [kind, setKind] = useState<"all" | MemKind>("all");
   const [q, setQ] = useState("");
+  const router = useRouter();
+  const toast = useToast();
 
   const list = useMemo(
     () =>
-      MEMS.filter((m) => (kind === "all" || m.kind === kind))
+      memories.filter((m) => (kind === "all" || m.kind === kind))
         .filter((m) =>
           q
             ? (m.title + " " + m.body + " " + m.tags.join(" "))
@@ -139,8 +144,81 @@ export default function MemoryPage() {
                 .includes(q.toLowerCase())
             : true,
         ),
-    [kind, q],
+    [memories, kind, q],
   );
+
+  const onExport = () => {
+    if (typeof window === "undefined") return;
+    const blob = new Blob([JSON.stringify(memories, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `spectra-memory-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({
+      title: "Memory exported",
+      description: `${memories.length} episodes packaged as JSON.`,
+      tone: "success",
+    });
+  };
+
+  const onAskMemory = () => {
+    router.push(
+      "/app/console?prompt=" +
+        encodeURIComponent(
+          q || "Recall the most relevant moments from the last few days",
+        ),
+    );
+  };
+
+  const onReplay = () => {
+    toast({
+      title: `Replaying "${active.title}"`,
+      description: `Pinned to your peripheral overlay · ${active.t}`,
+      tone: "info",
+    });
+  };
+
+  const onShare = async () => {
+    const summary = `${active.title} · ${active.t} ${active.date}\n${active.body}`;
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ title: active.title, text: summary });
+      } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(summary);
+        toast({
+          title: "Copied to clipboard",
+          description: "Paste anywhere to share this memory.",
+          tone: "success",
+        });
+      }
+    } catch {
+      // user dismissed share sheet
+    }
+  };
+
+  const onDelete = () => {
+    if (typeof window !== "undefined") {
+      const ok = window.confirm(
+        `Delete this memory permanently? "${active.title}" · ${active.t}`,
+      );
+      if (!ok) return;
+    }
+    setMemories((prev) => {
+      const next = prev.filter((m) => m.id !== active.id);
+      const fallback = next[0] ?? prev[0];
+      setActive(fallback);
+      return next;
+    });
+    toast({
+      title: "Memory forgotten",
+      description: "Aurora will no longer surface this episode.",
+      tone: "warning",
+    });
+  };
 
   return (
     <>
@@ -150,10 +228,10 @@ export default function MemoryPage() {
         description="Every event, every conversation, every glance — woven into a private, semantic timeline you can recall in plain language."
         actions={
           <>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={onExport}>
               <Icon name="download" className="h-4 w-4" /> Export
             </Button>
-            <Button variant="spectral" size="sm">
+            <Button variant="spectral" size="sm" onClick={onAskMemory}>
               <Icon name="sparkles" className="h-4 w-4" /> Ask memory
             </Button>
           </>
@@ -288,13 +366,13 @@ export default function MemoryPage() {
               <Stat2 k="Trust" v="local-only" />
             </div>
             <div className="mt-4 flex gap-2">
-              <Button variant="outline" size="sm" className="flex-1">
+              <Button variant="outline" size="sm" className="flex-1" onClick={onReplay}>
                 <Icon name="play" className="h-3.5 w-3.5" /> Replay
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={onShare}>
                 <Icon name="share" className="h-3.5 w-3.5" /> Share
               </Button>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={onDelete} aria-label="Delete memory">
                 <Icon name="trash" className="h-3.5 w-3.5" />
               </Button>
             </div>
