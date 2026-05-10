@@ -16,6 +16,7 @@ export const NAV: NavItem[] = [
   { label: "Agentic Workspace", href: "/app/agents", icon: "agent", badge: "12", group: "intelligence" },
 
   { label: "Device Center", href: "/app/devices", icon: "device", group: "operations" },
+  { label: "Lens · 3D Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
   { label: "Analytics", href: "/app/analytics", icon: "chart", group: "operations" },
 
   { label: "Settings & Privacy", href: "/app/settings", icon: "lock", group: "system" },
