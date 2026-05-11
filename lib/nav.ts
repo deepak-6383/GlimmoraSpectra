@@ -13,11 +13,13 @@ export const NAV: NavItem[] = [
   { label: "AI Console", href: "/app/console", icon: "wave", group: "core" },
 
   { label: "Cognition Layer", href: "/app/cognition", icon: "brain", badge: "phase 2", group: "intelligence" },
+  { label: "AGI Ecosystem", href: "/app/agi", icon: "sparkles", badge: "phase 5", group: "intelligence" },
   { label: "Vision Intelligence", href: "/app/vision", icon: "eye", group: "intelligence" },
   { label: "Memory Engine", href: "/app/memory", icon: "brain", group: "intelligence" },
   { label: "Agentic Workspace", href: "/app/agents", icon: "agent", badge: "12", group: "intelligence" },
 
   { label: "Device Center", href: "/app/devices", icon: "device", group: "operations" },
+  { label: "Edge Runtime", href: "/app/edge", icon: "cpu", badge: "phase 4", group: "operations" },
   { label: "Lens · 3D Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
   { label: "Analytics", href: "/app/analytics", icon: "chart", group: "operations" },
 
