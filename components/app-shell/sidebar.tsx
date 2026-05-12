@@ -57,7 +57,7 @@ export function Sidebar() {
         )}
       </button>
 
-      <nav className="flex-1 overflow-y-auto px-3 pb-4">
+      <nav className="gs-scroll-thin flex-1 overflow-y-auto px-3 pb-4">
         {Object.entries(groups).map(([key, items]) => (
           <div key={key} className="mb-3">
             {!collapsed && (
@@ -93,18 +93,18 @@ export function Sidebar() {
                       <Icon
                         name={item.icon}
                         className={cn(
-                          "h-4 w-4 transition-colors",
+                          "h-4 w-4 shrink-0 transition-colors",
                           active ? "text-cyan-spec" : "text-ink-mute group-hover:text-ink-soft",
                         )}
                       />
                       {!collapsed && (
                         <>
-                          <span>{item.label}</span>
+                          <span className="min-w-0 flex-1 truncate">{item.label}</span>
                           {item.badge && (
                             <Badge
                               tone={item.badge === "live" ? "aurora" : "neutral"}
                               pulse={item.badge === "live"}
-                              className="ml-auto"
+                              className="ml-1 shrink-0"
                             >
                               {item.badge}
                             </Badge>

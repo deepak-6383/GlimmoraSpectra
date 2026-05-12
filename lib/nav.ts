@@ -9,19 +9,19 @@ export type NavItem = {
 export const NAV: NavItem[] = [
   { label: "Cognitive Hub", href: "/app/dashboard", icon: "sparkles", group: "core" },
   { label: "Live Pipeline", href: "/app/live", icon: "camera", badge: "live", group: "core" },
-  { label: "Spatial AR", href: "/app/spatial", icon: "layers", badge: "phase 3", group: "core" },
+  { label: "Spatial AR", href: "/app/spatial", icon: "layers", group: "core" },
   { label: "AI Console", href: "/app/console", icon: "wave", group: "core" },
 
-  { label: "Cognition Layer", href: "/app/cognition", icon: "brain", badge: "phase 2", group: "intelligence" },
-  { label: "AGI Ecosystem", href: "/app/agi", icon: "sparkles", badge: "phase 5", group: "intelligence" },
+  { label: "Cognition Layer", href: "/app/cognition", icon: "brain", group: "intelligence" },
+  { label: "AGI Ecosystem", href: "/app/agi", icon: "sparkles", group: "intelligence" },
   { label: "Vision Intelligence", href: "/app/vision", icon: "eye", group: "intelligence" },
   { label: "Memory Engine", href: "/app/memory", icon: "brain", group: "intelligence" },
   { label: "Agentic Workspace", href: "/app/agents", icon: "agent", badge: "12", group: "intelligence" },
 
   { label: "Device Center", href: "/app/devices", icon: "device", group: "operations" },
-  { label: "Edge Runtime", href: "/app/edge", icon: "cpu", badge: "phase 4", group: "operations" },
-  { label: "Platform Console", href: "/app/platform", icon: "globe", badge: "phase 6", group: "operations" },
-  { label: "Lens · 3D Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
+  { label: "Edge Runtime", href: "/app/edge", icon: "cpu", group: "operations" },
+  { label: "Platform Console", href: "/app/platform", icon: "globe", group: "operations" },
+  { label: "Lens Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
   { label: "Analytics", href: "/app/analytics", icon: "chart", group: "operations" },
 
   { label: "System Status", href: "/app/system", icon: "activity", group: "system" },

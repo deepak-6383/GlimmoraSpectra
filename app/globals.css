@@ -2,35 +2,32 @@
 
 /* =========================================================
    GLIMMORA SPECTRA — Design Tokens
-   AGI-native operating system aesthetic
    -----------------------------------------------------------
-   The token *names* (--gs-void, --gs-ink, ...) are stable.
-   Two themes change their *values*:
+   Two named themes share every token name:
 
-       :root, [data-theme="dark"]   → DARK (default, baseline)
-       [data-theme="light"]         → PEARL AURORA LIGHT
+       :root, [data-theme="dark"]   → AURORA GLASS  (default)
+       [data-theme="light"]         → BEIGE · GOLD · OFF-WHITE
 
-   Components do not change. They reference --gs-* tokens (or
-   the Tailwind aliases below) and adapt automatically.
+   Token *names* are stable. Components never need to know
+   which theme is active — they reference --gs-* tokens or the
+   Tailwind aliases below and adapt automatically.
    ========================================================= */
 
 /* =========================================================
-   DARK — default baseline (the canonical Spectra look)
+   DARK — Aurora Glass (the canonical Spectra baseline)
    ========================================================= */
 :root,
 [data-theme="dark"] {
-  --gs-void:      #05070f; /* page background — deep void */
-  --gs-abyss:     #080b18; /* deeper atmospheric layer */
-  --gs-deep:      #0c1124; /* primary panels / cards */
-  --gs-graphite:  #131a31; /* alt surface for sub-cards */
+  --gs-void:      #0c0f24;  /* deep indigo — matches the reference screenshot */
+  --gs-abyss:     #0a0d20;  /* a touch deeper for layered surfaces */
+  --gs-deep:      #11163a;  /* primary panel — slightly lifted navy */
+  --gs-graphite:  #161b42;  /* alt sub-surface */
 
-  /* Glass — frosted light wash on dark */
   --gs-glass:        rgba(255, 255, 255, 0.04);
   --gs-glass-strong: rgba(255, 255, 255, 0.08);
   --gs-edge:         rgba(255, 255, 255, 0.10);
   --gs-edge-soft:    rgba(255, 255, 255, 0.06);
 
-  /* Accents — full neon */
   --gs-cyan:      #58e3ff;
   --gs-cyan-soft: #79c8ff;
   --gs-electric:  #4f7dff;
@@ -40,7 +37,6 @@
   --gs-amber:     #ffba6a;
   --gs-coral:     #ff7a8d;
 
-  /* Ink (text) — light on dark */
   --gs-ink:       #f3f5fb;
   --gs-ink-soft:  #c8cde0;
   --gs-ink-mute:  #8a93b0;
@@ -60,19 +56,17 @@
   --gs-r-lg: 22px;
   --gs-r-xl: 32px;
 
-  /* Body atmosphere — dark version */
   --gs-body-bg:
-    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.18), transparent 60%),
+    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.22), transparent 60%),
     radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
     radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.05), transparent 80%),
     var(--gs-void);
 
-  /* Surface mixins read these for theme-aware appearance */
   --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
   --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
   --gs-panel-bg:
     radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(12, 17, 36, 0.85), rgba(12, 17, 36, 0.55));
+    linear-gradient(180deg, rgba(17, 22, 58, 0.80), rgba(12, 15, 36, 0.55));
   --gs-panel-edge:
     linear-gradient(135deg, rgba(88, 227, 255, 0.45), rgba(140, 92, 255, 0) 40%, rgba(140, 92, 255, 0.45) 100%);
   --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
@@ -82,9 +76,11 @@
 
   --gs-scrollbar: linear-gradient(180deg, rgba(140, 92, 255, 0.55), rgba(88, 227, 255, 0.55));
   --gs-scrollbar-hover: linear-gradient(180deg, rgba(88, 227, 255, 0.75), rgba(140, 92, 255, 0.75));
+  --gs-scrollbar-thin: rgba(255, 255, 255, 0.16);
+  --gs-scrollbar-thin-hover: rgba(255, 255, 255, 0.30);
 
   --gs-selection-bg: rgba(88, 227, 255, 0.30);
-  --gs-selection-fg: #05070f;
+  --gs-selection-fg: #0c0f24;
 
   --gs-grid-line: rgba(255, 255, 255, 0.05);
   --gs-text-gradient-stops: linear-gradient(110deg, #ffffff 0%, #c8cde0 35%, #58e3ff 60%, #c965ff 100%);
@@ -95,75 +91,85 @@
 }
 
 /* =========================================================
-   LIGHT — Pearl Aurora (selectable via [data-theme="light"])
+   LIGHT — Beige · Gold · Off-White
    -----------------------------------------------------------
-   Identical layout, structure, animations and accents.
-   Surfaces flip to pearl/white; ink flips to deep navy; the
-   override block at the bottom keeps Tailwind `bg-white/X`
-   utilities visible on a light base.
+   Warm, premium, slightly editorial. Gold + bronze accents,
+   sage for "ok", terracotta for warnings. Surfaces are layered
+   cream + true off-white; glass becomes a warm dark wash so it
+   reads on cream as cleanly as the dark wash on pearl.
    ========================================================= */
 [data-theme="light"] {
-  --gs-void:      #eef1f8;
-  --gs-abyss:     #e2e8f3;
-  --gs-deep:      #ffffff;
-  --gs-graphite:  #f5f7fc;
+  --gs-void:      #fbfaf6;  /* near-white page bg with subtle warmth */
+  --gs-abyss:     #f3eee2;  /* soft cream wash for deeper areas */
+  --gs-deep:      #ffffff;  /* pure white panels */
+  --gs-graphite:  #f7f3ea;  /* very pale beige sub-surface */
 
-  /* Glass — frosted dark wash on light bg */
-  --gs-glass:        rgba(20, 28, 50, 0.045);
-  --gs-glass-strong: rgba(20, 28, 50, 0.075);
-  --gs-edge:         rgba(20, 28, 50, 0.12);
-  --gs-edge-soft:    rgba(20, 28, 50, 0.07);
+  /* Glass — warm dark wash on cream */
+  --gs-glass:        rgba(74, 56, 27, 0.045);
+  --gs-glass-strong: rgba(74, 56, 27, 0.080);
+  --gs-edge:         rgba(74, 56, 27, 0.16);
+  --gs-edge-soft:    rgba(74, 56, 27, 0.09);
 
-  /* Accents — same brand, darkened for legibility on white */
-  --gs-cyan:      #1aa9d6;
-  --gs-cyan-soft: #58e3ff;
-  --gs-electric:  #4f7dff;
-  --gs-violet:    #7a4dd8;
-  --gs-fuchsia:   #b143e0;
-  --gs-aurora:    #2cb887;
-  --gs-amber:     #d68a3a;
-  --gs-coral:     #e6516a;
+  /* Accents — Gold + warm complements
+     Re-mapped so existing component tones still mean the same
+     thing semantically (cyan=info, aurora=success, etc) without
+     looking out of place on beige. */
+  --gs-cyan:      #6b8b7a;  /* sage-teal — info */
+  --gs-cyan-soft: #9ab9aa;
+  --gs-electric:  #b8860b;  /* deep gold — primary */
+  --gs-violet:    #8b6f47;  /* warm bronze */
+  --gs-fuchsia:   #b8866b;  /* rose-gold */
+  --gs-aurora:    #7b9b6e;  /* sage — success */
+  --gs-amber:     #c9a961;  /* rich gold */
+  --gs-coral:     #c97264;  /* warm terracotta — error */
 
-  /* Ink (text) — INVERTED for light theme */
-  --gs-ink:       #0a0e1f;
-  --gs-ink-soft:  #2a3148;
-  --gs-ink-mute:  #5a6584;
-  --gs-ink-faint: #8a93b0;
+  /* Ink — warm espresso */
+  --gs-ink:       #2a1f0e;
+  --gs-ink-soft:  #4a3a22;
+  --gs-ink-mute:  #7a6a52;
+  --gs-ink-faint: #a89878;
 
-  /* Body atmosphere — softened auroras over pearl */
+  /* Gradients — gold-led on light */
+  --gs-grad-aurora:   linear-gradient(135deg, #c9a961 0%, #b8860b 50%, #8b6f47 100%);
+  --gs-grad-neural:   linear-gradient(135deg, #6b8b7a 0%, #b8860b 60%, #8b6f47 100%);
+  --gs-grad-spectral: linear-gradient(135deg, #c9a961 0%, #7b9b6e 100%);
+  --gs-grad-fire:     linear-gradient(135deg, #c9a961 0%, #c97264 50%, #8b6f47 100%);
+
+  /* Body atmosphere — gentle beige + gold breath, never heavy */
   --gs-body-bg:
-    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.10), transparent 60%),
-    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
-    radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.06), transparent 80%),
+    radial-gradient(1200px 800px at 80% -10%, rgba(184, 134, 11, 0.06), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(201, 169, 97, 0.09), transparent 65%),
+    radial-gradient(800px 600px at 50% 50%, rgba(123, 155, 110, 0.04), transparent 80%),
     var(--gs-void);
 
-  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.55));
-  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.78));
+  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.74));
+  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88));
   --gs-panel-bg:
-    radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
+    radial-gradient(120% 100% at 50% 0%, rgba(201, 169, 97, 0.06), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 250, 246, 0.94));
   --gs-panel-edge:
-    linear-gradient(135deg, rgba(26, 169, 214, 0.45), rgba(122, 77, 216, 0) 40%, rgba(122, 77, 216, 0.40) 100%);
-  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    linear-gradient(135deg, rgba(201, 169, 97, 0.50), rgba(184, 134, 11, 0) 40%, rgba(139, 111, 71, 0.45) 100%);
+  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
   --gs-panel-shadow:
-    0 18px 36px -22px rgba(20, 28, 50, 0.18),
-    0 4px 12px -6px rgba(20, 28, 50, 0.08);
+    0 18px 36px -22px rgba(74, 56, 27, 0.18),
+    0 4px 12px -6px rgba(74, 56, 27, 0.10);
 
-  --gs-scrollbar: linear-gradient(180deg, rgba(122, 77, 216, 0.50), rgba(26, 169, 214, 0.50));
-  --gs-scrollbar-hover: linear-gradient(180deg, rgba(26, 169, 214, 0.70), rgba(122, 77, 216, 0.70));
+  --gs-scrollbar: linear-gradient(180deg, rgba(184, 134, 11, 0.50), rgba(201, 169, 97, 0.50));
+  --gs-scrollbar-hover: linear-gradient(180deg, rgba(201, 169, 97, 0.70), rgba(184, 134, 11, 0.70));
+  --gs-scrollbar-thin: rgba(74, 56, 27, 0.18);
+  --gs-scrollbar-thin-hover: rgba(74, 56, 27, 0.34);
 
-  --gs-selection-bg: rgba(88, 227, 255, 0.30);
-  --gs-selection-fg: #0a0e1f;
+  --gs-selection-bg: rgba(201, 169, 97, 0.45);
+  --gs-selection-fg: #2a1f0e;
 
-  --gs-grid-line: rgba(20, 28, 50, 0.05);
-  --gs-text-gradient-stops: linear-gradient(110deg, #0a0e1f 0%, #2a3148 35%, #1aa9d6 60%, #b143e0 100%);
+  --gs-grid-line: rgba(74, 56, 27, 0.06);
+  --gs-text-gradient-stops: linear-gradient(110deg, #2a1f0e 0%, #4a3a22 35%, #b8860b 60%, #8b6f47 100%);
 
   color-scheme: light;
 }
 
 /* =========================================================
-   Tailwind v4 inline theme bridge — maps semantic CSS vars
-   to Tailwind colour utilities (text-ink, bg-void, …).
+   Tailwind v4 inline theme bridge
    ========================================================= */
 @theme inline {
   --color-background: var(--gs-void);
@@ -207,7 +213,6 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   letter-spacing: -0.011em;
   overscroll-behavior: none;
-  /* Smooth transition when the user toggles themes. */
   transition: background-color 280ms var(--gs-ease-premium), color 200ms var(--gs-ease-premium);
 }
 
@@ -221,6 +226,7 @@ body {
   color: var(--gs-selection-fg);
 }
 
+/* Default chunky themed scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -235,8 +241,26 @@ body {
   border: 2px solid transparent;
 }
 
+/* Thin, neutral scrollbar — used in dense surfaces (sidebar nav,
+   reflection panels, event tickers). Almost invisible when idle,
+   themed on hover. */
+.gs-scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gs-scrollbar-thin) transparent;
+}
+.gs-scroll-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+.gs-scroll-thin::-webkit-scrollbar-track { background: transparent; }
+.gs-scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--gs-scrollbar-thin);
+  border-radius: 999px;
+  border: none;
+}
+.gs-scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--gs-scrollbar-thin-hover);
+}
+
 /* =========================================================
-   Glass surfaces — adapt automatically via theme tokens
+   Glass surfaces — token-driven, theme-aware
    ========================================================= */
 
 .gs-glass {
@@ -336,7 +360,7 @@ body {
 }
 
 /* =========================================================
-   Animations — identical in both themes
+   Animations
    ========================================================= */
 
 @keyframes gs-pulse {
@@ -434,45 +458,44 @@ body {
 /* =========================================================
    Light-theme — Tailwind white-alpha utility flips
    -----------------------------------------------------------
-   Components hard-code Tailwind alphas like `bg-white/[0.04]`
-   and `border-white/10`. Those read fine on dark surfaces but
-   become invisible on a light pearl base. These rules apply
-   ONLY when [data-theme="light"] is set — the dark default is
-   never affected.
+   Many components hard-code Tailwind alphas (`bg-white/[0.04]`,
+   `border-white/10`, `bg-black/X`) — fine on dark, invisible on
+   cream. These rules apply ONLY when [data-theme="light"] is
+   active so the dark default is never touched.
    ========================================================= */
 
 [data-theme="light"] .bg-white\/5,
-[data-theme="light"] .bg-white\/\[0\.05\]   { background-color: rgba(20, 28, 50, 0.05); }
+[data-theme="light"] .bg-white\/\[0\.05\]   { background-color: rgba(74, 56, 27, 0.040); }
 [data-theme="light"] .bg-white\/10,
-[data-theme="light"] .bg-white\/\[0\.10\]   { background-color: rgba(20, 28, 50, 0.08); }
-[data-theme="light"] .bg-white\/15          { background-color: rgba(20, 28, 50, 0.12); }
-[data-theme="light"] .bg-white\/20          { background-color: rgba(20, 28, 50, 0.16); }
-[data-theme="light"] .bg-white\/\[0\.02\]   { background-color: rgba(20, 28, 50, 0.025); }
-[data-theme="light"] .bg-white\/\[0\.025\]  { background-color: rgba(20, 28, 50, 0.030); }
-[data-theme="light"] .bg-white\/\[0\.03\]   { background-color: rgba(20, 28, 50, 0.035); }
-[data-theme="light"] .bg-white\/\[0\.04\]   { background-color: rgba(20, 28, 50, 0.045); }
-[data-theme="light"] .bg-white\/\[0\.06\]   { background-color: rgba(20, 28, 50, 0.06); }
-[data-theme="light"] .bg-white\/\[0\.07\]   { background-color: rgba(20, 28, 50, 0.075); }
-[data-theme="light"] .bg-white\/\[0\.08\]   { background-color: rgba(20, 28, 50, 0.085); }
+[data-theme="light"] .bg-white\/\[0\.10\]   { background-color: rgba(74, 56, 27, 0.065); }
+[data-theme="light"] .bg-white\/15          { background-color: rgba(74, 56, 27, 0.095); }
+[data-theme="light"] .bg-white\/20          { background-color: rgba(74, 56, 27, 0.130); }
+[data-theme="light"] .bg-white\/\[0\.02\]   { background-color: rgba(74, 56, 27, 0.020); }
+[data-theme="light"] .bg-white\/\[0\.025\]  { background-color: rgba(74, 56, 27, 0.025); }
+[data-theme="light"] .bg-white\/\[0\.03\]   { background-color: rgba(74, 56, 27, 0.030); }
+[data-theme="light"] .bg-white\/\[0\.04\]   { background-color: rgba(74, 56, 27, 0.038); }
+[data-theme="light"] .bg-white\/\[0\.06\]   { background-color: rgba(74, 56, 27, 0.050); }
+[data-theme="light"] .bg-white\/\[0\.07\]   { background-color: rgba(74, 56, 27, 0.060); }
+[data-theme="light"] .bg-white\/\[0\.08\]   { background-color: rgba(74, 56, 27, 0.070); }
 
 [data-theme="light"] .border-white\/5,
-[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(20, 28, 50, 0.07); }
+[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(74, 56, 27, 0.10); }
 [data-theme="light"] .border-white\/10,
-[data-theme="light"] .border-white\/\[0\.10\]  { border-color: rgba(20, 28, 50, 0.10); }
+[data-theme="light"] .border-white\/\[0\.10\]  { border-color: rgba(74, 56, 27, 0.14); }
 [data-theme="light"] .border-white\/15,
-[data-theme="light"] .border-white\/\[0\.15\]  { border-color: rgba(20, 28, 50, 0.13); }
-[data-theme="light"] .border-white\/20         { border-color: rgba(20, 28, 50, 0.16); }
-[data-theme="light"] .border-white\/25         { border-color: rgba(20, 28, 50, 0.20); }
-[data-theme="light"] .border-white\/\[0\.04\]  { border-color: rgba(20, 28, 50, 0.06); }
-[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(20, 28, 50, 0.07); }
-[data-theme="light"] .border-white\/\[0\.06\]  { border-color: rgba(20, 28, 50, 0.08); }
-[data-theme="light"] .border-white\/\[0\.07\]  { border-color: rgba(20, 28, 50, 0.09); }
-[data-theme="light"] .border-white\/\[0\.08\]  { border-color: rgba(20, 28, 50, 0.10); }
+[data-theme="light"] .border-white\/\[0\.15\]  { border-color: rgba(74, 56, 27, 0.17); }
+[data-theme="light"] .border-white\/20         { border-color: rgba(74, 56, 27, 0.20); }
+[data-theme="light"] .border-white\/25         { border-color: rgba(74, 56, 27, 0.24); }
+[data-theme="light"] .border-white\/\[0\.04\]  { border-color: rgba(74, 56, 27, 0.10); }
+[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(74, 56, 27, 0.11); }
+[data-theme="light"] .border-white\/\[0\.06\]  { border-color: rgba(74, 56, 27, 0.12); }
+[data-theme="light"] .border-white\/\[0\.07\]  { border-color: rgba(74, 56, 27, 0.13); }
+[data-theme="light"] .border-white\/\[0\.08\]  { border-color: rgba(74, 56, 27, 0.14); }
 
-[data-theme="light"] .ring-white\/10           { --tw-ring-color: rgba(20, 28, 50, 0.10); }
-[data-theme="light"] .ring-white\/15           { --tw-ring-color: rgba(20, 28, 50, 0.13); }
+[data-theme="light"] .ring-white\/10           { --tw-ring-color: rgba(74, 56, 27, 0.14); }
+[data-theme="light"] .ring-white\/15           { --tw-ring-color: rgba(74, 56, 27, 0.17); }
 
-[data-theme="light"] .bg-black\/30             { background-color: rgba(255, 255, 255, 0.55); }
-[data-theme="light"] .bg-black\/40             { background-color: rgba(255, 255, 255, 0.65); }
-[data-theme="light"] .bg-black\/60             { background-color: rgba(20, 28, 50, 0.45); }
-[data-theme="light"] .bg-black\/70             { background-color: rgba(20, 28, 50, 0.55); }
+[data-theme="light"] .bg-black\/30             { background-color: rgba(255, 252, 245, 0.55); }
+[data-theme="light"] .bg-black\/40             { background-color: rgba(255, 252, 245, 0.65); }
+[data-theme="light"] .bg-black\/60             { background-color: rgba(74, 56, 27, 0.45); }
+[data-theme="light"] .bg-black\/70             { background-color: rgba(74, 56, 27, 0.55); }

@@ -47,8 +47,8 @@ export const viewport: Viewport = {
   // Dark by default; the inline bootstrap script may swap colorScheme on
   // first paint if the user previously chose light or follows system.
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#05070f" },
-    { media: "(prefers-color-scheme: light)", color: "#eef1f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0f24" },
+    { media: "(prefers-color-scheme: light)", color: "#fbfaf6" },
   ],
   width: "device-width",
   initialScale: 1,
