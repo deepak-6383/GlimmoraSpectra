@@ -8,6 +8,7 @@ import {
   useApiHealth,
   useSystemHealth,
 } from "@/lib/system-health";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useEffect, useState } from "react";
 
 export function Topbar() {
@@ -79,6 +80,8 @@ export function Topbar() {
                 : (health?.overall ?? "unknown")
             }
           />
+
+          <ThemeToggle />
 
           <button
             type="button"

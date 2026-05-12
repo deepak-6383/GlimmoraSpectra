@@ -3,21 +3,110 @@
 /* =========================================================
    GLIMMORA SPECTRA — Design Tokens
    AGI-native operating system aesthetic
+   -----------------------------------------------------------
+   The token *names* (--gs-void, --gs-ink, ...) are stable.
+   Two themes change their *values*:
+
+       :root, [data-theme="dark"]   → DARK (default, baseline)
+       [data-theme="light"]         → PEARL AURORA LIGHT
+
+   Components do not change. They reference --gs-* tokens (or
+   the Tailwind aliases below) and adapt automatically.
    ========================================================= */
 
-:root {
-  /* =========================================================
-     PEARL AURORA — premium light theme
-     -----------------------------------------------------------
-     Surfaces are layered cool pearl + pure white; glass becomes a
-     subtle dark wash on light; ink flips to deep navy. Accents
-     stay on-brand so the cinematic identity carries over.
-     ========================================================= */
+/* =========================================================
+   DARK — default baseline (the canonical Spectra look)
+   ========================================================= */
+:root,
+[data-theme="dark"] {
+  --gs-void:      #05070f; /* page background — deep void */
+  --gs-abyss:     #080b18; /* deeper atmospheric layer */
+  --gs-deep:      #0c1124; /* primary panels / cards */
+  --gs-graphite:  #131a31; /* alt surface for sub-cards */
 
-  --gs-void:      #eef1f8; /* page background — warm pearl */
-  --gs-abyss:     #e2e8f3; /* deeper atmospheric layer */
-  --gs-deep:      #ffffff; /* primary panels / cards */
-  --gs-graphite:  #f5f7fc; /* alt surface for sub-cards */
+  /* Glass — frosted light wash on dark */
+  --gs-glass:        rgba(255, 255, 255, 0.04);
+  --gs-glass-strong: rgba(255, 255, 255, 0.08);
+  --gs-edge:         rgba(255, 255, 255, 0.10);
+  --gs-edge-soft:    rgba(255, 255, 255, 0.06);
+
+  /* Accents — full neon */
+  --gs-cyan:      #58e3ff;
+  --gs-cyan-soft: #79c8ff;
+  --gs-electric:  #4f7dff;
+  --gs-violet:    #8c5cff;
+  --gs-fuchsia:   #c965ff;
+  --gs-aurora:    #6affc1;
+  --gs-amber:     #ffba6a;
+  --gs-coral:     #ff7a8d;
+
+  /* Ink (text) — light on dark */
+  --gs-ink:       #f3f5fb;
+  --gs-ink-soft:  #c8cde0;
+  --gs-ink-mute:  #8a93b0;
+  --gs-ink-faint: #5a6584;
+
+  --gs-grad-aurora:   linear-gradient(135deg, #58e3ff 0%, #8c5cff 50%, #c965ff 100%);
+  --gs-grad-neural:   linear-gradient(135deg, #79c8ff 0%, #4f7dff 60%, #8c5cff 100%);
+  --gs-grad-spectral: linear-gradient(135deg, #58e3ff 0%, #6affc1 100%);
+  --gs-grad-fire:     linear-gradient(135deg, #ffba6a 0%, #ff7a8d 50%, #c965ff 100%);
+
+  --gs-ease-cinema:  cubic-bezier(0.22, 1, 0.36, 1);
+  --gs-ease-premium: cubic-bezier(0.65, 0, 0.35, 1);
+  --gs-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --gs-r-sm: 8px;
+  --gs-r-md: 14px;
+  --gs-r-lg: 22px;
+  --gs-r-xl: 32px;
+
+  /* Body atmosphere — dark version */
+  --gs-body-bg:
+    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.18), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
+    radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.05), transparent 80%),
+    var(--gs-void);
+
+  /* Surface mixins read these for theme-aware appearance */
+  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  --gs-panel-bg:
+    radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
+    linear-gradient(180deg, rgba(12, 17, 36, 0.85), rgba(12, 17, 36, 0.55));
+  --gs-panel-edge:
+    linear-gradient(135deg, rgba(88, 227, 255, 0.45), rgba(140, 92, 255, 0) 40%, rgba(140, 92, 255, 0.45) 100%);
+  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  --gs-panel-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.7),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5);
+
+  --gs-scrollbar: linear-gradient(180deg, rgba(140, 92, 255, 0.55), rgba(88, 227, 255, 0.55));
+  --gs-scrollbar-hover: linear-gradient(180deg, rgba(88, 227, 255, 0.75), rgba(140, 92, 255, 0.75));
+
+  --gs-selection-bg: rgba(88, 227, 255, 0.30);
+  --gs-selection-fg: #05070f;
+
+  --gs-grid-line: rgba(255, 255, 255, 0.05);
+  --gs-text-gradient-stops: linear-gradient(110deg, #ffffff 0%, #c8cde0 35%, #58e3ff 60%, #c965ff 100%);
+
+  --background: var(--gs-void);
+  --foreground: var(--gs-ink);
+  color-scheme: dark;
+}
+
+/* =========================================================
+   LIGHT — Pearl Aurora (selectable via [data-theme="light"])
+   -----------------------------------------------------------
+   Identical layout, structure, animations and accents.
+   Surfaces flip to pearl/white; ink flips to deep navy; the
+   override block at the bottom keeps Tailwind `bg-white/X`
+   utilities visible on a light base.
+   ========================================================= */
+[data-theme="light"] {
+  --gs-void:      #eef1f8;
+  --gs-abyss:     #e2e8f3;
+  --gs-deep:      #ffffff;
+  --gs-graphite:  #f5f7fc;
 
   /* Glass — frosted dark wash on light bg */
   --gs-glass:        rgba(20, 28, 50, 0.045);
@@ -25,43 +114,60 @@
   --gs-edge:         rgba(20, 28, 50, 0.12);
   --gs-edge-soft:    rgba(20, 28, 50, 0.07);
 
-  /* Accents — same brand palette */
-  --gs-cyan:    #1aa9d6; /* slightly darkened so text on white reads */
+  /* Accents — same brand, darkened for legibility on white */
+  --gs-cyan:      #1aa9d6;
   --gs-cyan-soft: #58e3ff;
-  --gs-electric: #4f7dff;
-  --gs-violet:  #7a4dd8; /* darkened for legibility on white */
-  --gs-fuchsia: #b143e0;
-  --gs-aurora:  #2cb887; /* darker green for legibility */
-  --gs-amber:   #d68a3a;
-  --gs-coral:   #e6516a;
+  --gs-electric:  #4f7dff;
+  --gs-violet:    #7a4dd8;
+  --gs-fuchsia:   #b143e0;
+  --gs-aurora:    #2cb887;
+  --gs-amber:     #d68a3a;
+  --gs-coral:     #e6516a;
 
   /* Ink (text) — INVERTED for light theme */
-  --gs-ink:       #0a0e1f; /* near-black with slight blue cast */
-  --gs-ink-soft:  #2a3148; /* secondary body text */
-  --gs-ink-mute:  #5a6584; /* muted / labels */
-  --gs-ink-faint: #8a93b0; /* tertiary / hints */
+  --gs-ink:       #0a0e1f;
+  --gs-ink-soft:  #2a3148;
+  --gs-ink-mute:  #5a6584;
+  --gs-ink-faint: #8a93b0;
 
-  --gs-grad-aurora: linear-gradient(135deg, #58e3ff 0%, #8c5cff 50%, #c965ff 100%);
-  --gs-grad-neural: linear-gradient(135deg, #79c8ff 0%, #4f7dff 60%, #8c5cff 100%);
-  --gs-grad-spectral: linear-gradient(135deg, #58e3ff 0%, #6affc1 100%);
-  --gs-grad-fire: linear-gradient(135deg, #ffba6a 0%, #ff7a8d 50%, #c965ff 100%);
+  /* Body atmosphere — softened auroras over pearl */
+  --gs-body-bg:
+    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.10), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
+    radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.06), transparent 80%),
+    var(--gs-void);
 
-  --gs-ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
-  --gs-ease-premium: cubic-bezier(0.65, 0, 0.35, 1);
-  --gs-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.55));
+  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.78));
+  --gs-panel-bg:
+    radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
+  --gs-panel-edge:
+    linear-gradient(135deg, rgba(26, 169, 214, 0.45), rgba(122, 77, 216, 0) 40%, rgba(122, 77, 216, 0.40) 100%);
+  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  --gs-panel-shadow:
+    0 18px 36px -22px rgba(20, 28, 50, 0.18),
+    0 4px 12px -6px rgba(20, 28, 50, 0.08);
 
-  --gs-r-sm: 8px;
-  --gs-r-md: 14px;
-  --gs-r-lg: 22px;
-  --gs-r-xl: 32px;
+  --gs-scrollbar: linear-gradient(180deg, rgba(122, 77, 216, 0.50), rgba(26, 169, 214, 0.50));
+  --gs-scrollbar-hover: linear-gradient(180deg, rgba(26, 169, 214, 0.70), rgba(122, 77, 216, 0.70));
 
-  --background: var(--gs-void);
-  --foreground: var(--gs-ink);
+  --gs-selection-bg: rgba(88, 227, 255, 0.30);
+  --gs-selection-fg: #0a0e1f;
+
+  --gs-grid-line: rgba(20, 28, 50, 0.05);
+  --gs-text-gradient-stops: linear-gradient(110deg, #0a0e1f 0%, #2a3148 35%, #1aa9d6 60%, #b143e0 100%);
+
+  color-scheme: light;
 }
 
+/* =========================================================
+   Tailwind v4 inline theme bridge — maps semantic CSS vars
+   to Tailwind colour utilities (text-ink, bg-void, …).
+   ========================================================= */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--gs-void);
+  --color-foreground: var(--gs-ink);
 
   --color-void: var(--gs-void);
   --color-abyss: var(--gs-abyss);
@@ -85,6 +191,10 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* =========================================================
+   Base
+   ========================================================= */
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -97,78 +207,63 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   letter-spacing: -0.011em;
   overscroll-behavior: none;
+  /* Smooth transition when the user toggles themes. */
+  transition: background-color 280ms var(--gs-ease-premium), color 200ms var(--gs-ease-premium);
 }
 
 body {
-  /* Subtle violet/cyan auroras over the pearl base — soft, never washing
-     out the page. Layered radial gradients keep the cinematic feel. */
-  background:
-    radial-gradient(1200px 800px at 80% -10%, rgba(140, 92, 255, 0.10), transparent 60%),
-    radial-gradient(1000px 700px at -10% 110%, rgba(88, 227, 255, 0.12), transparent 65%),
-    radial-gradient(800px 600px at 50% 50%, rgba(106, 255, 193, 0.06), transparent 80%),
-    var(--gs-void);
+  background: var(--gs-body-bg);
   min-height: 100vh;
 }
 
 ::selection {
-  background: rgba(88, 227, 255, 0.30);
-  color: #0a0e1f;
+  background: var(--gs-selection-bg);
+  color: var(--gs-selection-fg);
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(122, 77, 216, 0.50), rgba(26, 169, 214, 0.50));
+  background: var(--gs-scrollbar);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(26, 169, 214, 0.70), rgba(122, 77, 216, 0.70));
+  background: var(--gs-scrollbar-hover);
   background-clip: padding-box;
   border: 2px solid transparent;
 }
 
 /* =========================================================
-   Glass surfaces — frosted dark wash on light pearl
+   Glass surfaces — adapt automatically via theme tokens
    ========================================================= */
 
 .gs-glass {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.78),
-    rgba(255, 255, 255, 0.55)
-  );
+  background: var(--gs-glass-bg);
   border: 1px solid var(--gs-edge);
   backdrop-filter: blur(22px) saturate(160%);
   -webkit-backdrop-filter: blur(22px) saturate(160%);
 }
 
 .gs-glass-strong {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 255, 255, 0.78)
-  );
-  border: 1px solid rgba(20, 28, 50, 0.14);
+  background: var(--gs-glass-strong-bg);
+  border: 1px solid var(--gs-edge);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
 .gs-panel {
   position: relative;
-  background:
-    radial-gradient(120% 100% at 50% 0%, rgba(88, 227, 255, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86));
+  background: var(--gs-panel-bg);
   border: 1px solid var(--gs-edge);
   border-radius: var(--gs-r-lg);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   overflow: hidden;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.7) inset,
-    0 18px 36px -22px rgba(20, 28, 50, 0.18),
-    0 4px 12px -6px rgba(20, 28, 50, 0.08);
+    var(--gs-panel-inset),
+    var(--gs-panel-shadow);
 }
 
 .gs-panel::before {
@@ -177,12 +272,7 @@ body {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(26, 169, 214, 0.45),
-    rgba(122, 77, 216, 0.0) 40%,
-    rgba(122, 77, 216, 0.40) 100%
-  );
+  background: var(--gs-panel-edge);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -204,8 +294,8 @@ body {
 
 .gs-grid-bg {
   background-image:
-    linear-gradient(rgba(20, 28, 50, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20, 28, 50, 0.05) 1px, transparent 1px);
+    linear-gradient(var(--gs-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gs-grid-line) 1px, transparent 1px);
   background-size: 56px 56px;
   background-position: -1px -1px;
   -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 75%);
@@ -213,7 +303,7 @@ body {
 }
 
 .gs-text-gradient {
-  background: linear-gradient(110deg, #0a0e1f 0%, #2a3148 35%, #1aa9d6 60%, #b143e0 100%);
+  background: var(--gs-text-gradient-stops);
   -webkit-background-clip: text;
           background-clip: text;
   color: transparent;
@@ -236,15 +326,18 @@ body {
 
 .gs-shadow-soft {
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 30px 80px -30px rgba(0, 0, 0, 0.7),
-    0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    var(--gs-panel-inset),
+    var(--gs-panel-shadow);
 }
 
 .gs-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, var(--gs-edge), transparent);
 }
+
+/* =========================================================
+   Animations — identical in both themes
+   ========================================================= */
 
 @keyframes gs-pulse {
   0%, 100% { opacity: 0.55; transform: scale(1); }
@@ -339,74 +432,47 @@ body {
 }
 
 /* =========================================================
-   Pearl Aurora — light-theme overrides
+   Light-theme — Tailwind white-alpha utility flips
    -----------------------------------------------------------
-   Components across the codebase hard-code Tailwind alphas
-   like `bg-white/[0.04]` and `border-white/10`. On a light
-   pearl base those are invisible. These rules flip every
-   such utility to a dark wash so the existing components
-   look right *without any component-level edits*.
-
-   Specificity: a single class selector matches Tailwind's
-   own specificity, so order is enough — these come after
-   Tailwind's import. We avoid `!important` to stay overridable.
+   Components hard-code Tailwind alphas like `bg-white/[0.04]`
+   and `border-white/10`. Those read fine on dark surfaces but
+   become invisible on a light pearl base. These rules apply
+   ONLY when [data-theme="light"] is set — the dark default is
+   never affected.
    ========================================================= */
 
-/* --- bg-white/X variants ----------------------------------- */
-.bg-white\/5,        .bg-white\/\[0\.05\] { background-color: rgba(20, 28, 50, 0.05); }
-.bg-white\/10,       .bg-white\/\[0\.10\] { background-color: rgba(20, 28, 50, 0.08); }
-.bg-white\/15        { background-color: rgba(20, 28, 50, 0.12); }
-.bg-white\/20        { background-color: rgba(20, 28, 50, 0.16); }
-.bg-white\/\[0\.02\] { background-color: rgba(20, 28, 50, 0.025); }
-.bg-white\/\[0\.025\]{ background-color: rgba(20, 28, 50, 0.030); }
-.bg-white\/\[0\.03\] { background-color: rgba(20, 28, 50, 0.035); }
-.bg-white\/\[0\.04\] { background-color: rgba(20, 28, 50, 0.045); }
-.bg-white\/\[0\.06\] { background-color: rgba(20, 28, 50, 0.06); }
-.bg-white\/\[0\.07\] { background-color: rgba(20, 28, 50, 0.075); }
-.bg-white\/\[0\.08\] { background-color: rgba(20, 28, 50, 0.085); }
+[data-theme="light"] .bg-white\/5,
+[data-theme="light"] .bg-white\/\[0\.05\]   { background-color: rgba(20, 28, 50, 0.05); }
+[data-theme="light"] .bg-white\/10,
+[data-theme="light"] .bg-white\/\[0\.10\]   { background-color: rgba(20, 28, 50, 0.08); }
+[data-theme="light"] .bg-white\/15          { background-color: rgba(20, 28, 50, 0.12); }
+[data-theme="light"] .bg-white\/20          { background-color: rgba(20, 28, 50, 0.16); }
+[data-theme="light"] .bg-white\/\[0\.02\]   { background-color: rgba(20, 28, 50, 0.025); }
+[data-theme="light"] .bg-white\/\[0\.025\]  { background-color: rgba(20, 28, 50, 0.030); }
+[data-theme="light"] .bg-white\/\[0\.03\]   { background-color: rgba(20, 28, 50, 0.035); }
+[data-theme="light"] .bg-white\/\[0\.04\]   { background-color: rgba(20, 28, 50, 0.045); }
+[data-theme="light"] .bg-white\/\[0\.06\]   { background-color: rgba(20, 28, 50, 0.06); }
+[data-theme="light"] .bg-white\/\[0\.07\]   { background-color: rgba(20, 28, 50, 0.075); }
+[data-theme="light"] .bg-white\/\[0\.08\]   { background-color: rgba(20, 28, 50, 0.085); }
 
-/* --- border-white/X variants ------------------------------- */
-.border-white\/5,    .border-white\/\[0\.05\] { border-color: rgba(20, 28, 50, 0.07); }
-.border-white\/10,   .border-white\/\[0\.10\] { border-color: rgba(20, 28, 50, 0.10); }
-.border-white\/15,   .border-white\/\[0\.15\] { border-color: rgba(20, 28, 50, 0.13); }
-.border-white\/20    { border-color: rgba(20, 28, 50, 0.16); }
-.border-white\/25    { border-color: rgba(20, 28, 50, 0.20); }
-.border-white\/\[0\.04\] { border-color: rgba(20, 28, 50, 0.06); }
-.border-white\/\[0\.05\] { border-color: rgba(20, 28, 50, 0.07); }
-.border-white\/\[0\.06\] { border-color: rgba(20, 28, 50, 0.08); }
-.border-white\/\[0\.07\] { border-color: rgba(20, 28, 50, 0.09); }
-.border-white\/\[0\.08\] { border-color: rgba(20, 28, 50, 0.10); }
-.border-white\/\[0\.10\]{ border-color: rgba(20, 28, 50, 0.12); }
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(20, 28, 50, 0.07); }
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/\[0\.10\]  { border-color: rgba(20, 28, 50, 0.10); }
+[data-theme="light"] .border-white\/15,
+[data-theme="light"] .border-white\/\[0\.15\]  { border-color: rgba(20, 28, 50, 0.13); }
+[data-theme="light"] .border-white\/20         { border-color: rgba(20, 28, 50, 0.16); }
+[data-theme="light"] .border-white\/25         { border-color: rgba(20, 28, 50, 0.20); }
+[data-theme="light"] .border-white\/\[0\.04\]  { border-color: rgba(20, 28, 50, 0.06); }
+[data-theme="light"] .border-white\/\[0\.05\]  { border-color: rgba(20, 28, 50, 0.07); }
+[data-theme="light"] .border-white\/\[0\.06\]  { border-color: rgba(20, 28, 50, 0.08); }
+[data-theme="light"] .border-white\/\[0\.07\]  { border-color: rgba(20, 28, 50, 0.09); }
+[data-theme="light"] .border-white\/\[0\.08\]  { border-color: rgba(20, 28, 50, 0.10); }
 
-/* --- ring-white/X (focus rings on dark theme) -------------- */
-.ring-white\/10  { --tw-ring-color: rgba(20, 28, 50, 0.10); }
-.ring-white\/15  { --tw-ring-color: rgba(20, 28, 50, 0.13); }
+[data-theme="light"] .ring-white\/10           { --tw-ring-color: rgba(20, 28, 50, 0.10); }
+[data-theme="light"] .ring-white\/15           { --tw-ring-color: rgba(20, 28, 50, 0.13); }
 
-/* --- bg-black/X (heavily used on overlays) ----------------- */
-.bg-black\/30 { background-color: rgba(255, 255, 255, 0.55); }
-.bg-black\/40 { background-color: rgba(255, 255, 255, 0.65); }
-.bg-black\/60 { background-color: rgba(20, 28, 50, 0.45); }
-.bg-black\/70 { background-color: rgba(20, 28, 50, 0.55); }
-
-/* --- text-white → keep, but flip in inverted spots --------
-   Most `text-white` usage sits on dark gradient buttons or
-   over translucent overlays where white text still works.
-   We only flip the rare cases where it lands on a pure-white
-   panel — those use `text-ink` already. */
-
-/* --- Spectral / spectral-fill button-text contrast ---------
-   The `Button variant="primary"` uses bg-white text-black, which
-   stays correct on light pearl too. */
-
-/* --- Selection (kept above) ------------------------------- */
-
-/* --- Spectra — gradient buttons keep their existing look --- */
-
-/* =========================================================
-   Atmospheric cursor aura — soften for light bg
-   ========================================================= */
-[aria-hidden][style*="screen"] {
-  /* mix-blend-mode:screen behaves correctly on light bg —
-     the violet/cyan glow simply tints toward white, which is
-     what we want. Just lower the alpha a touch via mask. */
-}
+[data-theme="light"] .bg-black\/30             { background-color: rgba(255, 255, 255, 0.55); }
+[data-theme="light"] .bg-black\/40             { background-color: rgba(255, 255, 255, 0.65); }
+[data-theme="light"] .bg-black\/60             { background-color: rgba(20, 28, 50, 0.45); }
+[data-theme="light"] .bg-black\/70             { background-color: rgba(20, 28, 50, 0.55); }

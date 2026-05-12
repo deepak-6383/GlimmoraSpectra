@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import { CursorAura } from "@/components/cursor-aura";
 import { _Safelist } from "@/components/_safelist";
 import { ToastViewport } from "@/components/ui/toast";
+import { ThemeProvider, themeBootstrapScript } from "@/components/theme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,11 +44,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#eef1f8",
+  // Dark by default; the inline bootstrap script may swap colorScheme on
+  // first paint if the user previously chose light or follows system.
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#05070f" },
+    { media: "(prefers-color-scheme: light)", color: "#eef1f8" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -57,15 +62,26 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
+      data-theme="dark"
       suppressHydrationWarning
     >
+      <head>
+        {/*
+          No-FOUC theme init. Runs synchronously before React boots so
+          first paint already carries the persisted theme. Safe inline —
+          no user-provided content interpolated.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+      </head>
       <body className="min-h-full text-ink relative overflow-x-hidden">
-        <Providers>
-          <CursorAura />
-          <ToastViewport />
-          {children}
-          <_Safelist />
-        </Providers>
+        <ThemeProvider>
+          <Providers>
+            <CursorAura />
+            <ToastViewport />
+            {children}
+            <_Safelist />
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

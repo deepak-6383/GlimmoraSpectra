@@ -20,6 +20,7 @@ export const NAV: NavItem[] = [
 
   { label: "Device Center", href: "/app/devices", icon: "device", group: "operations" },
   { label: "Edge Runtime", href: "/app/edge", icon: "cpu", badge: "phase 4", group: "operations" },
+  { label: "Platform Console", href: "/app/platform", icon: "globe", badge: "phase 6", group: "operations" },
   { label: "Lens · 3D Preview", href: "/app/lens", icon: "glasses", badge: "new", group: "operations" },
   { label: "Analytics", href: "/app/analytics", icon: "chart", group: "operations" },
 
