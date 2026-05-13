@@ -99,28 +99,25 @@
    reads on cream as cleanly as the dark wash on pearl.
    ========================================================= */
 [data-theme="light"] {
-  --gs-void:      #fbfaf6;  /* near-white page bg with subtle warmth */
-  --gs-abyss:     #f3eee2;  /* soft cream wash for deeper areas */
-  --gs-deep:      #ffffff;  /* pure white panels */
-  --gs-graphite:  #f7f3ea;  /* very pale beige sub-surface */
+  --gs-void:      #faf7f2;  /* soft cream beige page bg */
+  --gs-abyss:     #efe7d7;  /* slightly deeper cream */
+  --gs-deep:      #ffffff;  /* pure white cards */
+  --gs-graphite:  #f5efe2;  /* warm cream sub-surface */
 
-  /* Glass — warm dark wash on cream */
-  --gs-glass:        rgba(74, 56, 27, 0.045);
-  --gs-glass-strong: rgba(74, 56, 27, 0.080);
-  --gs-edge:         rgba(74, 56, 27, 0.16);
-  --gs-edge-soft:    rgba(74, 56, 27, 0.09);
+  /* Glass — warm dark wash on cream (topbar reads as white-frosted) */
+  --gs-glass:        rgba(85, 107, 93, 0.06);
+  --gs-glass-strong: rgba(85, 107, 93, 0.10);
+  --gs-edge:         rgba(74, 56, 27, 0.14);
+  --gs-edge-soft:    rgba(74, 56, 27, 0.08);
 
-  /* Accents — Gold + warm complements
-     Re-mapped so existing component tones still mean the same
-     thing semantically (cyan=info, aurora=success, etc) without
-     looking out of place on beige. */
+  /* Accents — warm beige primary, olive support, sage/terracotta semantics */
   --gs-cyan:      #6b8b7a;  /* sage-teal — info */
   --gs-cyan-soft: #9ab9aa;
-  --gs-electric:  #b8860b;  /* deep gold — primary */
+  --gs-electric:  #d4a373;  /* warm beige — PRIMARY CTA accent */
   --gs-violet:    #8b6f47;  /* warm bronze */
   --gs-fuchsia:   #b8866b;  /* rose-gold */
   --gs-aurora:    #7b9b6e;  /* sage — success */
-  --gs-amber:     #c9a961;  /* rich gold */
+  --gs-amber:     #d4a373;  /* warm beige (mirrors primary for cohesion) */
   --gs-coral:     #c97264;  /* warm terracotta — error */
 
   /* Ink — warm espresso */
@@ -129,41 +126,41 @@
   --gs-ink-mute:  #7a6a52;
   --gs-ink-faint: #a89878;
 
-  /* Gradients — gold-led on light */
-  --gs-grad-aurora:   linear-gradient(135deg, #c9a961 0%, #b8860b 50%, #8b6f47 100%);
-  --gs-grad-neural:   linear-gradient(135deg, #6b8b7a 0%, #b8860b 60%, #8b6f47 100%);
-  --gs-grad-spectral: linear-gradient(135deg, #c9a961 0%, #7b9b6e 100%);
-  --gs-grad-fire:     linear-gradient(135deg, #c9a961 0%, #c97264 50%, #8b6f47 100%);
+  /* Gradients — warm beige primary */
+  --gs-grad-aurora:   linear-gradient(135deg, #d4a373 0%, #b8866b 50%, #8b6f47 100%);
+  --gs-grad-neural:   linear-gradient(135deg, #7b9b6e 0%, #d4a373 60%, #8b6f47 100%);
+  --gs-grad-spectral: linear-gradient(135deg, #d4a373 0%, #7b9b6e 100%);
+  --gs-grad-fire:     linear-gradient(135deg, #d4a373 0%, #c97264 50%, #8b6f47 100%);
 
-  /* Body atmosphere — gentle beige + gold breath, never heavy */
+  /* Body atmosphere — almost invisible; cream stays dominant */
   --gs-body-bg:
-    radial-gradient(1200px 800px at 80% -10%, rgba(184, 134, 11, 0.06), transparent 60%),
-    radial-gradient(1000px 700px at -10% 110%, rgba(201, 169, 97, 0.09), transparent 65%),
-    radial-gradient(800px 600px at 50% 50%, rgba(123, 155, 110, 0.04), transparent 80%),
+    radial-gradient(1200px 800px at 80% -10%, rgba(212, 163, 115, 0.07), transparent 60%),
+    radial-gradient(1000px 700px at -10% 110%, rgba(85, 107, 93, 0.05), transparent 65%),
     var(--gs-void);
 
-  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.74));
-  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.88));
-  --gs-panel-bg:
-    radial-gradient(120% 100% at 50% 0%, rgba(201, 169, 97, 0.06), transparent 60%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 250, 246, 0.94));
-  --gs-panel-edge:
-    linear-gradient(135deg, rgba(201, 169, 97, 0.50), rgba(184, 134, 11, 0) 40%, rgba(139, 111, 71, 0.45) 100%);
-  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
-  --gs-panel-shadow:
-    0 18px 36px -22px rgba(74, 56, 27, 0.18),
-    0 4px 12px -6px rgba(74, 56, 27, 0.10);
+  /* Topbar (gs-glass) — white-frosted over cream */
+  --gs-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.68));
+  --gs-glass-strong-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.84));
 
-  --gs-scrollbar: linear-gradient(180deg, rgba(184, 134, 11, 0.50), rgba(201, 169, 97, 0.50));
-  --gs-scrollbar-hover: linear-gradient(180deg, rgba(201, 169, 97, 0.70), rgba(184, 134, 11, 0.70));
+  /* Cards — pure white with soft minimal shadow */
+  --gs-panel-bg: linear-gradient(180deg, #ffffff 0%, #fdfaf3 100%);
+  --gs-panel-edge:
+    linear-gradient(135deg, rgba(212, 163, 115, 0.40), rgba(139, 111, 71, 0) 40%, rgba(139, 111, 71, 0.28) 100%);
+  --gs-panel-inset: 0 1px 0 rgba(255, 255, 255, 0.90) inset;
+  --gs-panel-shadow:
+    0 1px 2px rgba(74, 56, 27, 0.04),
+    0 10px 24px -16px rgba(74, 56, 27, 0.18);
+
+  --gs-scrollbar: linear-gradient(180deg, rgba(212, 163, 115, 0.55), rgba(139, 111, 71, 0.45));
+  --gs-scrollbar-hover: linear-gradient(180deg, rgba(212, 163, 115, 0.75), rgba(139, 111, 71, 0.65));
   --gs-scrollbar-thin: rgba(74, 56, 27, 0.18);
   --gs-scrollbar-thin-hover: rgba(74, 56, 27, 0.34);
 
-  --gs-selection-bg: rgba(201, 169, 97, 0.45);
+  --gs-selection-bg: rgba(212, 163, 115, 0.40);
   --gs-selection-fg: #2a1f0e;
 
-  --gs-grid-line: rgba(74, 56, 27, 0.06);
-  --gs-text-gradient-stops: linear-gradient(110deg, #2a1f0e 0%, #4a3a22 35%, #b8860b 60%, #8b6f47 100%);
+  --gs-grid-line: rgba(74, 56, 27, 0.05);
+  --gs-text-gradient-stops: linear-gradient(110deg, #2a1f0e 0%, #4a3a22 35%, #d4a373 60%, #8b6f47 100%);
 
   color-scheme: light;
 }
@@ -499,3 +496,52 @@ body {
 [data-theme="light"] .bg-black\/40             { background-color: rgba(255, 252, 245, 0.65); }
 [data-theme="light"] .bg-black\/60             { background-color: rgba(74, 56, 27, 0.45); }
 [data-theme="light"] .bg-black\/70             { background-color: rgba(74, 56, 27, 0.55); }
+
+/* =========================================================
+   LIGHT — sidebar treated as a muted olive accent surface
+   -----------------------------------------------------------
+   The premium-SaaS palette pairs a cream-beige canvas with a
+   solid muted-olive sidebar (#556B5D). Topbar / panels stay
+   white-on-cream; only the <aside> sidebar adopts the olive
+   surface + light-text treatment.
+   ========================================================= */
+
+[data-theme="light"] aside.gs-glass,
+[data-theme="light"] aside.gs-glass-strong {
+  background: #556b5d;
+  border-right: 1px solid rgba(0, 0, 0, 0.10);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Light text on the olive surface */
+[data-theme="light"] aside .text-ink       { color: rgba(255, 255, 255, 0.96); }
+[data-theme="light"] aside .text-ink-soft  { color: rgba(255, 255, 255, 0.82); }
+[data-theme="light"] aside .text-ink-mute  { color: rgba(255, 255, 255, 0.62); }
+[data-theme="light"] aside .text-ink-faint { color: rgba(255, 255, 255, 0.42); }
+[data-theme="light"] aside .text-cyan-spec { color: #ead7b8; }
+
+/* Inside the sidebar, white-alpha utilities should stay white-tinted
+   (they sit on dark olive, not on cream) — UNDO the global flip. */
+[data-theme="light"] aside .bg-white\/\[0\.02\],
+[data-theme="light"] aside .bg-white\/\[0\.025\] { background-color: rgba(255, 255, 255, 0.04); }
+[data-theme="light"] aside .bg-white\/\[0\.03\]  { background-color: rgba(255, 255, 255, 0.05); }
+[data-theme="light"] aside .bg-white\/\[0\.04\]  { background-color: rgba(255, 255, 255, 0.07); }
+[data-theme="light"] aside .bg-white\/\[0\.05\],
+[data-theme="light"] aside .bg-white\/5          { background-color: rgba(255, 255, 255, 0.08); }
+[data-theme="light"] aside .bg-white\/\[0\.06\]  { background-color: rgba(255, 255, 255, 0.10); }
+[data-theme="light"] aside .bg-white\/\[0\.07\]  { background-color: rgba(255, 255, 255, 0.12); }
+[data-theme="light"] aside .bg-white\/\[0\.08\]  { background-color: rgba(255, 255, 255, 0.14); }
+[data-theme="light"] aside .bg-white\/10,
+[data-theme="light"] aside .bg-white\/\[0\.10\]  { background-color: rgba(255, 255, 255, 0.16); }
+
+[data-theme="light"] aside .border-white\/\[0\.04\] { border-color: rgba(255, 255, 255, 0.10); }
+[data-theme="light"] aside .border-white\/\[0\.05\],
+[data-theme="light"] aside .border-white\/5        { border-color: rgba(255, 255, 255, 0.12); }
+[data-theme="light"] aside .border-white\/\[0\.06\] { border-color: rgba(255, 255, 255, 0.13); }
+[data-theme="light"] aside .border-white\/\[0\.07\] { border-color: rgba(255, 255, 255, 0.14); }
+[data-theme="light"] aside .border-white\/\[0\.08\] { border-color: rgba(255, 255, 255, 0.16); }
+[data-theme="light"] aside .border-white\/10,
+[data-theme="light"] aside .border-white\/\[0\.10\] { border-color: rgba(255, 255, 255, 0.18); }
+[data-theme="light"] aside .border-white\/15,
+[data-theme="light"] aside .border-white\/\[0\.15\] { border-color: rgba(255, 255, 255, 0.22); }
