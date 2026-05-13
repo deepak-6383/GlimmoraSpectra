@@ -203,19 +203,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body {
+/* Scroll lives on the <html> element only. Body stays at the default
+   `overflow: visible`, so there is exactly one scroll container and
+   the page always scrolls when content exceeds the viewport. */
+html {
   background: var(--gs-void);
   color: var(--gs-ink);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   letter-spacing: -0.011em;
-  overscroll-behavior: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
   transition: background-color 280ms var(--gs-ease-premium), color 200ms var(--gs-ease-premium);
 }
 
 body {
   background: var(--gs-body-bg);
+  color: var(--gs-ink);
   min-height: 100vh;
+  height: auto;
 }
 
 ::selection {
@@ -508,59 +514,59 @@ body {
 
 [data-theme="light"] aside.gs-glass,
 [data-theme="light"] aside.gs-glass-strong {
-  background: #6c8478;        /* lighter muted olive */
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: #e8c879;        /* pale gold */
+  border-right: 1px solid rgba(74, 56, 27, 0.18);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-/* Sidebar-specific scrollbar — visible on the olive surface.
+/* Sidebar-specific scrollbar — visible on the pale-gold surface.
    `gs-scroll-thin` is used on the nav element; this override only
    applies while in light mode AND inside <aside>, so the dark theme
    and the rest of the app are untouched. */
 [data-theme="light"] aside .gs-scroll-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+  scrollbar-color: rgba(74, 56, 27, 0.40) transparent;
 }
 [data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar         { width: 7px; height: 7px; }
 [data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-track   { background: transparent; }
 [data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-thumb   {
-  background: rgba(255, 255, 255, 0.38);
+  background: rgba(74, 56, 27, 0.40);
   border-radius: 999px;
   border: none;
 }
 [data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.56);
+  background: rgba(74, 56, 27, 0.60);
 }
 
-/* Light text on the olive surface */
-[data-theme="light"] aside .text-ink       { color: rgba(255, 255, 255, 0.96); }
-[data-theme="light"] aside .text-ink-soft  { color: rgba(255, 255, 255, 0.82); }
-[data-theme="light"] aside .text-ink-mute  { color: rgba(255, 255, 255, 0.62); }
-[data-theme="light"] aside .text-ink-faint { color: rgba(255, 255, 255, 0.42); }
-[data-theme="light"] aside .text-cyan-spec { color: #ead7b8; }
+/* Dark espresso text on the pale-gold surface — high contrast, premium */
+[data-theme="light"] aside .text-ink       { color: rgba(42, 31, 14, 0.95); }
+[data-theme="light"] aside .text-ink-soft  { color: rgba(42, 31, 14, 0.82); }
+[data-theme="light"] aside .text-ink-mute  { color: rgba(42, 31, 14, 0.62); }
+[data-theme="light"] aside .text-ink-faint { color: rgba(42, 31, 14, 0.45); }
+[data-theme="light"] aside .text-cyan-spec { color: #5a3a1b; }
 
-/* Inside the sidebar, white-alpha utilities should stay white-tinted
-   (they sit on dark olive, not on cream) — UNDO the global flip. */
+/* Inside the gold sidebar, white-alpha utilities should be dark-alpha
+   washes so hover / active states are clearly visible on the gold. */
 [data-theme="light"] aside .bg-white\/\[0\.02\],
-[data-theme="light"] aside .bg-white\/\[0\.025\] { background-color: rgba(255, 255, 255, 0.04); }
-[data-theme="light"] aside .bg-white\/\[0\.03\]  { background-color: rgba(255, 255, 255, 0.05); }
-[data-theme="light"] aside .bg-white\/\[0\.04\]  { background-color: rgba(255, 255, 255, 0.07); }
+[data-theme="light"] aside .bg-white\/\[0\.025\] { background-color: rgba(74, 56, 27, 0.04); }
+[data-theme="light"] aside .bg-white\/\[0\.03\]  { background-color: rgba(74, 56, 27, 0.05); }
+[data-theme="light"] aside .bg-white\/\[0\.04\]  { background-color: rgba(74, 56, 27, 0.07); }
 [data-theme="light"] aside .bg-white\/\[0\.05\],
-[data-theme="light"] aside .bg-white\/5          { background-color: rgba(255, 255, 255, 0.08); }
-[data-theme="light"] aside .bg-white\/\[0\.06\]  { background-color: rgba(255, 255, 255, 0.10); }
-[data-theme="light"] aside .bg-white\/\[0\.07\]  { background-color: rgba(255, 255, 255, 0.12); }
-[data-theme="light"] aside .bg-white\/\[0\.08\]  { background-color: rgba(255, 255, 255, 0.14); }
+[data-theme="light"] aside .bg-white\/5          { background-color: rgba(74, 56, 27, 0.09); }
+[data-theme="light"] aside .bg-white\/\[0\.06\]  { background-color: rgba(74, 56, 27, 0.11); }
+[data-theme="light"] aside .bg-white\/\[0\.07\]  { background-color: rgba(74, 56, 27, 0.13); }
+[data-theme="light"] aside .bg-white\/\[0\.08\]  { background-color: rgba(74, 56, 27, 0.15); }
 [data-theme="light"] aside .bg-white\/10,
-[data-theme="light"] aside .bg-white\/\[0\.10\]  { background-color: rgba(255, 255, 255, 0.16); }
+[data-theme="light"] aside .bg-white\/\[0\.10\]  { background-color: rgba(74, 56, 27, 0.18); }
 
-[data-theme="light"] aside .border-white\/\[0\.04\] { border-color: rgba(255, 255, 255, 0.10); }
+[data-theme="light"] aside .border-white\/\[0\.04\] { border-color: rgba(74, 56, 27, 0.12); }
 [data-theme="light"] aside .border-white\/\[0\.05\],
-[data-theme="light"] aside .border-white\/5        { border-color: rgba(255, 255, 255, 0.12); }
-[data-theme="light"] aside .border-white\/\[0\.06\] { border-color: rgba(255, 255, 255, 0.13); }
-[data-theme="light"] aside .border-white\/\[0\.07\] { border-color: rgba(255, 255, 255, 0.14); }
-[data-theme="light"] aside .border-white\/\[0\.08\] { border-color: rgba(255, 255, 255, 0.16); }
+[data-theme="light"] aside .border-white\/5        { border-color: rgba(74, 56, 27, 0.14); }
+[data-theme="light"] aside .border-white\/\[0\.06\] { border-color: rgba(74, 56, 27, 0.15); }
+[data-theme="light"] aside .border-white\/\[0\.07\] { border-color: rgba(74, 56, 27, 0.16); }
+[data-theme="light"] aside .border-white\/\[0\.08\] { border-color: rgba(74, 56, 27, 0.18); }
 [data-theme="light"] aside .border-white\/10,
-[data-theme="light"] aside .border-white\/\[0\.10\] { border-color: rgba(255, 255, 255, 0.18); }
+[data-theme="light"] aside .border-white\/\[0\.10\] { border-color: rgba(74, 56, 27, 0.20); }
 [data-theme="light"] aside .border-white\/15,
-[data-theme="light"] aside .border-white\/\[0\.15\] { border-color: rgba(255, 255, 255, 0.22); }
+[data-theme="light"] aside .border-white\/\[0\.15\] { border-color: rgba(74, 56, 27, 0.25); }

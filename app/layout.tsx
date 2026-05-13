@@ -61,7 +61,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${display.variable} antialiased`}
       data-theme="dark"
       suppressHydrationWarning
     >
@@ -73,7 +73,7 @@ export default function RootLayout({
         */}
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
-      <body className="min-h-full text-ink relative overflow-x-hidden">
+      <body className="min-h-screen text-ink relative">
         <ThemeProvider>
           <Providers>
             <CursorAura />
