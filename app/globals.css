@@ -514,8 +514,8 @@ body {
 
 [data-theme="light"] aside.gs-glass,
 [data-theme="light"] aside.gs-glass-strong {
-  background: #e8c879;        /* pale gold */
-  border-right: 1px solid rgba(74, 56, 27, 0.18);
+  background: #d4c4a8;        /* warm beige */
+  border-right: 1px solid rgba(74, 56, 27, 0.16);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
