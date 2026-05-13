@@ -508,10 +508,29 @@ body {
 
 [data-theme="light"] aside.gs-glass,
 [data-theme="light"] aside.gs-glass-strong {
-  background: #556b5d;
-  border-right: 1px solid rgba(0, 0, 0, 0.10);
+  background: #6c8478;        /* lighter muted olive */
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Sidebar-specific scrollbar — visible on the olive surface.
+   `gs-scroll-thin` is used on the nav element; this override only
+   applies while in light mode AND inside <aside>, so the dark theme
+   and the rest of the app are untouched. */
+[data-theme="light"] aside .gs-scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+}
+[data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar         { width: 7px; height: 7px; }
+[data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-track   { background: transparent; }
+[data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-thumb   {
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 999px;
+  border: none;
+}
+[data-theme="light"] aside .gs-scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.56);
 }
 
 /* Light text on the olive surface */
