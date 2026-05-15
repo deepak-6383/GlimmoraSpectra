@@ -520,6 +520,7 @@ body {
   -webkit-backdrop-filter: none;
 }
 
+
 /* Sidebar-specific scrollbar — visible on the pale-gold surface.
    `gs-scroll-thin` is used on the nav element; this override only
    applies while in light mode AND inside <aside>, so the dark theme

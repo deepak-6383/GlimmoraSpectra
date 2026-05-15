@@ -28,8 +28,8 @@ export function Sidebar() {
   }, {});
 
   const content = (
-    <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-3 px-5">
+    <div className="flex h-screen flex-col">
+      <div className="flex h-16 shrink-0 items-center gap-3 px-5">
         <LogoMark />
         {!collapsed && (
           <span className="font-display text-[15px] tracking-tight">
@@ -42,7 +42,7 @@ export function Sidebar() {
         type="button"
         onClick={toggleCmd}
         className={cn(
-          "mx-3 mb-3 flex h-10 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-left text-sm text-ink-mute transition hover:bg-white/[0.07]",
+          "mx-3 mb-3 flex h-10 shrink-0 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-left text-sm text-ink-mute transition hover:bg-white/[0.07]",
           collapsed && "justify-center px-0",
         )}
       >
@@ -57,7 +57,7 @@ export function Sidebar() {
         )}
       </button>
 
-      <nav className="gs-scroll-thin flex-1 overflow-y-auto px-3 pb-4">
+      <nav className="gs-scroll-thin flex-1 min-h-0 overflow-y-auto px-3 pb-4">
         {Object.entries(groups).map(([key, items]) => (
           <div key={key} className="mb-3">
             {!collapsed && (
@@ -73,6 +73,7 @@ export function Sidebar() {
                     <Link
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
+                      data-live={item.badge === "live" ? "true" : undefined}
                       className={cn(
                         "group relative flex h-10 items-center gap-3 rounded-xl px-3 text-sm transition-all",
                         active
@@ -120,7 +121,7 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-3 pb-4">
+      <div className="shrink-0 px-3 pb-4">
         <div
           className={cn(
             "rounded-2xl border border-white/[0.06] bg-white/[0.025] p-3",
@@ -162,7 +163,7 @@ export function Sidebar() {
       {/* Desktop */}
       <aside
         className={cn(
-          "hidden lg:flex fixed inset-y-0 left-0 z-30 flex-col border-r border-white/[0.05] gs-glass",
+          "hidden lg:flex fixed inset-y-0 left-0 z-30 h-screen flex-col overflow-hidden border-r border-white/[0.05] gs-glass",
           collapsed ? "w-[72px]" : "w-[260px]",
           "transition-[width] duration-300",
         )}

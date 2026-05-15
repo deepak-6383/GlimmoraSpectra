@@ -26,32 +26,56 @@ export const CameraFeed = forwardRef<CameraFeedHandle, Props>(function CameraFee
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const startingRef = useRef(false);
   const [ready, setReady] = useState(false);
 
   const start = useCallback(async () => {
+    // Re-entry guard: StrictMode (dev) double-fires effects, so start() can run twice in parallel.
+    // The second getUserMedia → srcObject swap aborts the first play() with "interrupted by a new load request".
+    if (startingRef.current || streamRef.current) return;
     if (typeof navigator === "undefined" || !navigator.mediaDevices) {
       onError?.(new Error("getUserMedia unavailable"));
       return;
     }
+    startingRef.current = true;
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 720 }, height: { ideal: 540 }, frameRate: { ideal: 24 } },
         audio: false,
       });
+      // Bail if a stop()/unmount happened while awaiting the prompt.
+      if (!videoRef.current) {
+        stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
       streamRef.current = stream;
       const v = videoRef.current;
-      if (v) {
-        v.srcObject = stream;
+      v.pause();
+      v.srcObject = stream;
+      try {
         await v.play();
-        setReady(true);
+      } catch (err: unknown) {
+        const e = err as { name?: string; message?: string };
+        // play() races with srcObject swaps; AbortError / "interrupted" is harmless.
+        if (e?.name !== "AbortError" && !/interrupted/i.test(e?.message ?? "")) {
+          throw err;
+        }
       }
+      setReady(true);
     } catch (err) {
       onError?.(err as Error);
       setReady(false);
+    } finally {
+      startingRef.current = false;
     }
   }, [onError]);
 
   const stop = useCallback(() => {
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.srcObject = null;
+    }
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     setReady(false);
@@ -60,7 +84,9 @@ export const CameraFeed = forwardRef<CameraFeedHandle, Props>(function CameraFee
   useEffect(() => {
     if (active) void start();
     else stop();
-    return stop;
+    return () => {
+      stop();
+    };
   }, [active, start, stop]);
 
   useImperativeHandle(ref, () => ({

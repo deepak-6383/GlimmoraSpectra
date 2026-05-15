@@ -269,7 +269,7 @@ export default function SpatialPage() {
   }, [setAnchors, toast]);
 
   return (
-    <div className="relative min-h-[calc(100vh-100px)] overflow-hidden rounded-[24px] border border-white/10 bg-black">
+    <div className="relative min-h-[calc(100vh-100px)] overflow-hidden rounded-[24px] border border-white/10 bg-void">
       <div
         className="relative h-[calc(100vh-120px)] min-h-[640px] w-full overflow-hidden rounded-[24px]"
       >
